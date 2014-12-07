@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{% for thread in context_data %}
+    <br />{{ thread.author.username }}-{{ thread.created|date:"M d, Y" }}-[{{ thread.node.slug|default_if_none:"-" }}]-{{ thread.title }}
+{% endfor %}
+
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<br />发信人：{{ context_data.author.username }}[{{ context_data.author.email }}]
+<br />发布时间：{{ context_data.created|date:"Y/m/d G:i" }}
+<br />标题：{{ context_data.title }}
+<br />内容：
+<br />{{ context_data.content }}
+<br />
+
+</body>
+</html>
