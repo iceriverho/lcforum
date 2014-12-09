@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head lang="zh-cn">
@@ -5,10 +6,26 @@
     <title></title>
 </head>
 <body>
-{% for thread in context_data %}
-    <br />{{ thread.author.username }}-{{ thread.created|date:"M d, Y" }}-[{{ thread.node.slug|default_if_none:"-" }}]-{{ thread.title }}
-{% endfor %}
-
+<div id="container">
+    <div id="title">
+        xmu.club
+    </div>
+    <div id="thread-list">
+        {% for thread in context_data %}
+        <div class="thread-item">
+            <span class="thread-author">{{ thread.author.username|default:"匿名" }}</span>
+            ▸
+            <span class="thread-created">{% language 'en' %}{{ thread.created|date:"M d, Y" }}{% endlanguage %}</span>
+            ▸
+            <span class="thread-title">
+                [<a href="{{ thread.node.url }}">{{ thread.node.slug|default:"-" }}</a>]
+                <a href="{{ thread.url }}">{{ thread.title }}</a>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="footer">powered by lcforum</div>
+</div>
 
 </body>
 </html>

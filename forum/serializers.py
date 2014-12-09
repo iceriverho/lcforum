@@ -7,7 +7,7 @@ from .relations import LinkWithNameRelatedField
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    date_joined = serializers.DateTimeField(format=None)
+    date_joined = serializers.DateTimeField(format=None, read_only=True)
     def create(self, validated_attrs):
         return User.objects.create_user(**validated_attrs)
 
@@ -18,14 +18,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ('pk', 'username', 'password', 'email', 'date_joined', 'url')
-        read_only_fields = ('date_joined',)
         extra_kwargs = {'password': {'write_only': True}}
 
 
 class ReplySerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-    created = serializers.DateTimeField(format=None)
-    last_edited = serializers.DateTimeField(format=None)
+    created = serializers.DateTimeField(format=None, read_only=True)
+    last_edited = serializers.DateTimeField(format=None, read_only=True)
 
     class Meta:
         model = Reply
@@ -39,13 +38,12 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     author = UserSerializer(read_only=True)
     # node = serializers.PrimaryKeyRelatedField(queryset=NodeTag.objects.all())
     node = LinkWithNameRelatedField(queryset=NodeTag.objects.all(), view_name='nodetag-detail', slug='name')
-    created = serializers.DateTimeField(format=None)
-    last_edited = serializers.DateTimeField(format=None)
+    created = serializers.DateTimeField(format=None, read_only=True)
+    last_edited = serializers.DateTimeField(format=None, read_only=True)
 
     class Meta:
         model = Post
         fields = ('pk', 'author', 'node', 'title', 'content', 'created', 'last_edited', 'replies', 'url')
-        read_only_fields = ('created', 'last_edited')
         depth = 1
 
 
