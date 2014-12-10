@@ -1,0 +1,7 @@
+{% extends "forum/base.html" %}
+    {% block container %}
+        {% for node in context_data %}
+        <div>[<a href="{% url 'nodetag-detail' pk=node.pk %}">{{ node.name }}</a>]</div>
+        {% endfor %}
+
+    {% endblock %}
