@@ -2,7 +2,7 @@
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
-        'forum.renderers.TemplateWithContextHTMLRenderer',
+        #'forum.renderers.TemplateWithContextHTMLRenderer',
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     )

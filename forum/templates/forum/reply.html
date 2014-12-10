@@ -1,0 +1,9 @@
+{% extends 'forum/base.html' %}
+{% block container %}
+    <div><a href="{% url 'post-detail' pk=post_node.pk %}">返回主题</a></div>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" value="发表回复" />
+    </form>
+{% endblock %}

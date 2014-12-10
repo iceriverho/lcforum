@@ -1,16 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head lang="zh-cn">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<br />发信人：{{ context_data.author.username }}[{{ context_data.author.email }}]
-<br />发布时间：{{ context_data.created|date:"Y/m/d G:i" }}
-<br />标题：{{ context_data.title }}
-<br />内容：
-<br />{{ context_data.content }}
-<br />
-
-</body>
-</html>
+{% extends "forum/base.html" %}
+{% load i18n %}
+    {% block container %}
+    <div id="thread-head">
+        <div class="thread-head">
+            <span class="thread-head-l">作&#12288&#12288者：</span>
+            <span class="thread-head-r">{{ context_data.author.username|default:"匿名" }}</span>
+        </div>
+        <div class="thread-head">
+            <span class="thread-head-l">发布时间：</span>
+            <span class="thread-head-r">{% language 'en' %}{{ context_data.created|date:"Y/m/d G:i" }}{% endlanguage %}</span>
+        </div>
+        <div class="thread-head">
+            <span class="thread-head-l">标&#12288&#12288题：</span>
+            <span class="thread-head-r">[{{ context_data.node.slug|default:"-" }}]{{ context_data.title }}</span>
+        </div>
+    </div>
+    <div id="thread-body">
+        {{ context_data.content|default:"<i>正文无内容</i>" }}
+    </div><br/>
+    <div><a href="{% url 'post-reply' pk=context_data.pk %}">回复本文</a></div>
+        <br/>
+    <div id="thread-reply">
+        {% for reply in context_data.replies %}
+            <div class="thread-reply-head">
+                <i>#{{ forloop.counter }}</i>
+                {{ reply.title }}
+                <i>
+                by
+                {{ reply.author.username|default:"匿名" }}
+                @
+                {{ reply.created|date:"Y/m/d G:i" }}
+                </i>
+            </div>
+            <div class="thread-reply-body">
+                {{ reply.content|default:"<i>正文无内容</i>" }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endblock %}

@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -7,6 +9,7 @@ from .models import Post, NodeTag, Reply
 from .serializers import UserSerializer, PostSerializer, NodeTagSerializer
 from .permissions import IsOwnerOrReadOnly, AllowNewuser
 from .mixins import TemplatesMixin
+from .forms import ReplyForm, ThreadForm
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,18 +23,28 @@ class PostViewSet(viewsets.ModelViewSet, TemplatesMixin):
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
-    @detail_route(methods=['post'], permission_classes=[permissions.AllowAny])
+    @detail_route(methods=['get', 'post'], permission_classes=[permissions.AllowAny])
     def reply(self, request, pk=None):
         post_node = self.get_object()
+
+        if request.method == 'GET':
+            return render_to_response(
+                'forum/reply.html',
+                {'form': ReplyForm(
+                    initial={'title': 'Re:'+post_node.title}
+                ), 'post_node': post_node},
+                context_instance=RequestContext(request)
+            )
+
         reply = Reply(
             author=request.user if request.user.is_authenticated() else None,
             post_node=post_node,
-            title=request.data['title'],
+            title=request.data['title'] if request.data['title'] != '' else "Re:"+request.data['title'],
             content=request.data['content']
         )
         try:
             reply.save()
-            return Response({'status': 'Successfully replied.'})
+            return redirect('post-detail', pk=post_node.pk)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -44,9 +57,17 @@ class NodeTagViewSet(viewsets.ModelViewSet):
     serializer_class = NodeTagSerializer
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
 
-    @detail_route(methods=['post'], permission_classes=[permissions.AllowAny])
+    @detail_route(methods=['get', 'post'], permission_classes=[permissions.AllowAny])
     def post(self, request, pk=None):
         node = self.get_object()
+
+        if request.method == 'GET':
+            return render_to_response(
+                'forum/post.html',
+                {'form': ThreadForm(), 'node': node},
+                context_instance=RequestContext(request)
+            )
+
         thread = Post(
             author=request.user if request.user.is_authenticated() else None,
             node=node,
@@ -55,6 +76,6 @@ class NodeTagViewSet(viewsets.ModelViewSet):
         )
         try:
             thread.save()
-            return Response({'status': 'Successfully posted.'})
+            return redirect('nodetag-detail', pk=node.pk)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

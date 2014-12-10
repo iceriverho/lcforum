@@ -1,0 +1,9 @@
+{% extends 'forum/base.html' %}
+{% block container %}
+    <div><a href="{% url 'nodetag-detail' pk=node.pk %}">返回[{{ node.name }}]节点</a></div>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" value="发表文章" />
+    </form>
+{% endblock %}

@@ -1,8 +1,18 @@
-{% extends "forum/base.html" %}
 {% load i18n %}
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="container">
+    <div id="title">
+        <h1><a href="/">xmu.club</a></h1>
+    </div>
     {% block container %}
     <div id="thread-list">
-        {% for thread in context_data reversed %}
+        {% for thread in context_data %}
         <div class="thread-item">
             <span class="thread-author">{{ thread.author.username|default:"匿名" }}</span>
             ▸
@@ -16,3 +26,10 @@
         {% endfor %}
     </div>
     {% endblock %}
+    <br/>
+    <div>----</div>
+    <div id="footer">xmu.club is powered by lcforum</div>
+</div>
+
+</body>
+</html>
