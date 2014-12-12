@@ -52,10 +52,17 @@ class PostViewSet(viewsets.ModelViewSet, TemplatesMixin):
         serializer.save(author=self.request.user if self.request.user.is_authenticated() else None)
 
 
-class NodeTagViewSet(viewsets.ModelViewSet):
+class NodeTagViewSet(viewsets.ModelViewSet, TemplatesMixin):
     queryset = NodeTag.objects.all()
     serializer_class = NodeTagSerializer
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
+
+    def list(self, request, *args, **kwargs):
+        return render_to_response(
+            'forum/nodetag/list.html',
+            {'context_data': self.queryset},
+            context_instance=RequestContext(request)
+        )
 
     @detail_route(methods=['get', 'post'], permission_classes=[permissions.AllowAny])
     def post(self, request, pk=None):
