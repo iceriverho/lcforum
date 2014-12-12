@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+import markdown
 
 
 class DateTimeBase(models.Model):
@@ -14,6 +15,11 @@ class PostBase(DateTimeBase):
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True, null=True)
     author = models.ForeignKey(User, null=True, related_name='%(class)s', on_delete=models.SET_NULL)
+    content_md = models.TextField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.content_md = markdown.markdown(self.content)
+        super(PostBase, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
