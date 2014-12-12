@@ -1,7 +1,10 @@
 {% extends "forum/base.html" %}
 {% load i18n %}
     {% block container %}
-        <div><a href="{% url 'nodetag-list' %}">查看节点(版块)列表</a></div>
+        <div>
+            <a href="{% url 'nodetag-list' %}">查看节点(版块)列表</a>
+            <a href="{% url 'blog-list' %}">blog</a>
+        </div>
         <br/>
     <div id="thread-list">
         {% for thread in context_data reversed %}

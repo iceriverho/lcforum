@@ -1,4 +1,3 @@
-{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head lang="zh-cn">
@@ -11,20 +10,7 @@
         <h1><a href="/">xmu.club</a></h1>
     </div>
     {% block container %}
-    <div id="thread-list">
-        {% for thread in context_data %}
-        <div class="thread-item">
-            <span class="thread-author">{{ thread.author.username|default:"匿名" }}</span>
-            ▸
-            <span class="thread-created">{% language 'en' %}{{ thread.created|date:"M d, Y" }}{% endlanguage %}</span>
-            ▸
-            <span class="thread-title">
-                [<a href="{{ thread.node.url }}">{{ thread.node.slug|default:"-" }}</a>]
-                <a href="{{ thread.url }}">{{ thread.title }}</a>
-            </span>
-        </div>
-        {% endfor %}
-    </div>
+
     {% endblock %}
     <br/>
     <div>----</div>
