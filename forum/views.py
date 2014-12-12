@@ -4,6 +4,7 @@ from django.template import RequestContext
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+import itertools
 
 from .models import Post, NodeTag, Reply
 from .serializers import UserSerializer, PostSerializer, NodeTagSerializer
@@ -90,4 +91,10 @@ class NodeTagViewSet(viewsets.ModelViewSet, TemplatesMixin):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def blog_view(request):
-    pass
+    posts = Post.objects.filter(bygod=True)
+    replies = Reply.objects.filter(bygod=True)
+    return render_to_response(
+        'forum/blog/list.html',
+        {'posts': posts, 'replies': replies},
+        context_instance=RequestContext(request)
+    )
