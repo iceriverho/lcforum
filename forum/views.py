@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .models import Post, NodeTag, Reply
 from .serializers import UserSerializer, PostSerializer, NodeTagSerializer
-from .permissions import IsOwnerOrReadOnly, AllowNewuser
+from .permissions import IsOwnerOrReadOnly, AllowNewuser, ReadOnly
 from .mixins import TemplatesMixin
 from .forms import ReplyForm, ThreadForm
 
@@ -40,7 +40,8 @@ class PostViewSet(viewsets.ModelViewSet, TemplatesMixin):
             author=request.user if request.user.is_authenticated() else None,
             post_node=post_node,
             title=request.data['title'] if request.data['title'] != '' else "Re:"+request.data['title'],
-            content=request.data['content']
+            content=request.data['content'],
+            bygod = request.data['bygod']
         )
         try:
             reply.save()
@@ -79,10 +80,14 @@ class NodeTagViewSet(viewsets.ModelViewSet, TemplatesMixin):
             author=request.user if request.user.is_authenticated() else None,
             node=node,
             title=request.data['title'],
-            content=request.data['content']
+            content=request.data['content'],
+            bygod=request.data['bygod']
         )
         try:
             thread.save()
             return redirect('nodetag-detail', pk=node.pk)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+def blog_view(request):
+    pass

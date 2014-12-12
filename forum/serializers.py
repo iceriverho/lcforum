@@ -28,7 +28,10 @@ class ReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reply
-        fields = ('pk', 'author', 'title', 'content', 'content_md', 'created', 'last_edited')
+        fields = (
+            'pk', 'author', 'title', 'content', 'content_md',
+            'created', 'last_edited', 'bygod'
+        )
         read_only_fields = ('created', 'last_edited')
         depth = 1
 
@@ -43,7 +46,10 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('pk', 'author', 'node', 'title', 'content', 'content_md', 'created', 'last_edited', 'replies', 'url')
+        fields = (
+            'pk', 'author', 'node', 'title', 'content', 'content_md',
+            'created', 'last_edited', 'replies', 'url', 'bygod'
+        )
         depth = 1
 
 

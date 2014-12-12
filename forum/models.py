@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.html import conditional_escape
 import markdown
 
 
@@ -16,9 +17,11 @@ class PostBase(DateTimeBase):
     content = models.TextField(blank=True, null=True)
     author = models.ForeignKey(User, null=True, related_name='%(class)s', on_delete=models.SET_NULL)
     content_md = models.TextField(blank=True, null=True)
+    bygod = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        self.content_md = markdown.markdown(self.content)
+        self.bygod = self.bygod if self.author.is_superuser else False
+        self.content_md = markdown.markdown(self.content, safe_mode='escape')
         super(PostBase, self).save(*args, **kwargs)
 
     class Meta:

@@ -16,7 +16,7 @@
         </div>
     </div>
     <div id="thread-body">
-        {{ context_data.content|default:"<i>正文无内容</i>" }}
+        {{ context_data.content_md|safe|default:"<i>正文无内容</i>" }}
     </div><br/>
     <div><a href="{% url 'post-reply' pk=context_data.pk %}">回复本文</a></div>
         <br/>
@@ -33,7 +33,7 @@
                 </i>
             </div>
             <div class="thread-reply-body">
-                {{ reply.content|default:"<i>正文无内容</i>" }}
+                {{ reply.content_md|safe|default:"<i>正文无内容</i>" }}
             </div>
         {% endfor %}
     </div>
