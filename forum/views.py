@@ -60,7 +60,7 @@ class NodeTagViewSet(viewsets.ModelViewSet, TemplatesMixin):
     def list(self, request, *args, **kwargs):
         return render_to_response(
             'forum/nodetag/list.html',
-            {'context_data': self.queryset},
+            {'context_data': self.get_queryset()},
             context_instance=RequestContext(request)
         )
 
