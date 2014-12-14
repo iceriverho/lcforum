@@ -1,22 +1,39 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url, include
+from django.conf.urls import url
+from django.views.generic import ListView
 
-from .views import (
-    UserViewSet, PostViewSet, NodeTagViewSet,
-    blog_list, blog_node, blog_detail, index
-)
-from .routers import LCForumRouter
+from . import models
+from . import views
 
-router = LCForumRouter()
-router.register(r'user', UserViewSet)
-router.register(r'thread', PostViewSet)
-router.register(r'node', NodeTagViewSet)
 
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url(r'^forum/', include(router.urls)),
-    url(r'^blog/$', blog_list, name='blog-list'),
-    url(r'^blog/(?P<pk>\d+)/$', blog_node, name='blog-node'),
-    url(r'^blog/article/(?P<pk>\d+)/$', blog_detail, name='blog-detail')
+    url(r'^$', ListView.as_view(
+        model=models.Post,
+        template_name='forum/post/list.html'
+    ), name='index'),
+    url(r'^forum/$', ListView.as_view(
+        model=models.Post,
+        template_name='forum/post/list.html'
+    ), name='forum-index'),
+    url(r'^forum/thread/(?P<pk>\d+)/$', views.DetailView.as_view(
+        model=models.Post,
+        template_name='forum/post/detail.html'
+    ), name='post-detail'),
+    url(r'^forum/thread/(?P<pk>\d+)/reply/$', views.ReplyToPost.as_view(), name='post-reply'),
+    url(r'^forum/node/$', views.ListView.as_view(
+        model=models.NodeTag,
+        template_name='forum/nodetag/list.html'
+    ), name='nodetag-list'),
+    url(r'^forum/node/(?P<pk>\d+)/$', views.DetailView.as_view(
+        model=models.NodeTag,
+        template_name='forum/nodetag/detail.html'
+    ), name='nodetag-detail'),
+    url(r'^forum/node/(?P<pk>\d+)/post/$', views.CreatePost.as_view(), name='nodetag-post'),
+    url(r'^blog/$', views.BlogList.as_view(), name='blog-list'),
+    url(r'^blog/(?P<pk>\d+)/$', views.BlogListByNode.as_view(), name='blog-node'),
+    url(r'^blog/article/(?P<pk>\d+)/$', views.DetailView.as_view(
+        model=models.Post,
+        template_name='forum/blog/detail.html'
+    ), name='blog-detail'),
 ]

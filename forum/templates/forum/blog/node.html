@@ -3,7 +3,7 @@
     {% block container %}
     <div>
     <ul>
-        {% for post in posts %}
+        {% for post in post_list %}
             <li><a href="{% url 'blog-detail' pk=post.pk %}">{{ post.title }}</a></li>
         {% endfor %}
 

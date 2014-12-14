@@ -4,18 +4,18 @@
         <div>
             <a href="/">首页</a>
             »
-            <b>[{{ context_data.name }}]</b>
-            <a href="{% url 'nodetag-post' pk=context_data.pk %}">发表内容</a>
+            <b>[{{ nodetag.name }}]</b>
+            <a href="{% url 'nodetag-post' pk=nodetag.pk %}">发表内容</a>
         </div><br/>
     <div id="thread-list">
-        {% for post in context_data.posts reversed %}
+        {% for post in nodetag.posts.all reversed %}
         <div class="thread-item">
             <span class="thread-author">{{ post.author.username|default:"匿名" }}</span>
             ▸
             <span class="thread-created">{% language 'en' %}{{ post.created|date:"M d, Y" }}{% endlanguage %}</span>
             ▸
             <span class="thread-title">
-                <a href="{{ post.url }}">{{ post.title }}</a>
+                <a href="{% url 'post-detail' pk=post.pk %}">{{ post.title }}</a>
             </span>
         </div>
         {% endfor %}

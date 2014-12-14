@@ -1,123 +1,61 @@
-from django.contrib.auth.models import User
-from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import detail_route
-from rest_framework.response import Response
+from django.views.generic import DetailView, ListView, CreateView
 
 from .models import Post, NodeTag, Reply
-from .serializers import UserSerializer, PostSerializer, NodeTagSerializer
-from .permissions import IsOwnerOrReadOnly, AllowNewuser
-from .mixins import TemplatesMixin
-from .forms import ReplyForm, ThreadForm
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (AllowNewuser, )
+class BlogList(ListView):
+    queryset = Post.objects.filter(bygod=True).order_by('node', '-created')
+    template_name = 'forum/blog/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogList, self).get_context_data(**kwargs)
+        context['reply_list'] = Reply.objects.filter(bygod=True)
+        return context
 
 
-class PostViewSet(viewsets.ModelViewSet, TemplatesMixin):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+class BlogListByNode(DetailView):
+    model = NodeTag
+    template_name = 'forum/blog/node.html'
 
-    @detail_route(methods=['get', 'post'], permission_classes=[permissions.AllowAny])
-    def reply(self, request, pk=None):
-        post_node = self.get_object()
-
-        if request.method == 'GET':
-            return render_to_response(
-                'forum/reply.html',
-                {'form': ReplyForm(
-                    initial={'title': 'Re:' + post_node.title}
-                ), 'post_node': post_node},
-                context_instance=RequestContext(request)
-            )
-
-        reply = Reply(
-            author=request.user if request.user.is_authenticated() else None,
-            post_node=post_node,
-            title=request.data['title'] if request.data['title'] != '' else "Re:" + request.data['title'],
-            content=request.data['content'],
-            bygod=request.data.get('bygod', False)
-        )
-        try:
-            reply.save()
-            return redirect('post-detail', pk=post_node.pk)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user if self.request.user.is_authenticated() else None)
+    def get_context_data(self, **kwargs):
+        context = super(BlogListByNode, self).get_context_data(**kwargs)
+        context['post_list'] = Post.objects.filter(bygod=True, node=self.object)
+        return context
 
 
-class NodeTagViewSet(viewsets.ModelViewSet, TemplatesMixin):
-    queryset = NodeTag.objects.all()
-    serializer_class = NodeTagSerializer
-    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
+class ReplyToPost(CreateView):
+    model = Reply
+    fields = ['title', 'content', 'bygod']
+    template_name = 'forum/reply.html'
+    post_node = None
 
-    def list(self, request, *args, **kwargs):
-        return render_to_response(
-            'forum/nodetag/list.html',
-            {'context_data': self.get_queryset()},
-            context_instance=RequestContext(request)
-        )
+    def form_valid(self, form):
+        form.instance.author = self.request.user if self.request.user.is_authenticated() else None
+        form.instance.post_node = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return super(ReplyToPost, self).form_valid(form)
 
-    @detail_route(methods=['get', 'post'], permission_classes=[permissions.AllowAny])
-    def post(self, request, pk=None):
-        node = self.get_object()
+    def get_initial(self):
+        self.post_node = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return {'title': 'Re:' + self.post_node.title}
 
-        if request.method == 'GET':
-            return render_to_response(
-                'forum/post.html',
-                {'form': ThreadForm(), 'node': node},
-                context_instance=RequestContext(request)
-            )
-
-        thread = Post(
-            author=request.user if request.user.is_authenticated() else None,
-            node=node,
-            title=request.data['title'],
-            content=request.data['content'],
-            bygod=request.data.get('bygod', False)
-        )
-        try:
-            thread.save()
-            return redirect('nodetag-detail', pk=node.pk)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+    def get_context_data(self, **kwargs):
+        context = super(ReplyToPost, self).get_context_data(**kwargs)
+        context['post_node'] = self.post_node
+        return context
 
 
-def blog_list(request):
-    posts = Post.objects.filter(bygod=True)
-    replies = Reply.objects.filter(bygod=True)
-    return render_to_response(
-        'forum/blog/list.html',
-        {'posts': posts, 'replies': replies},
-        context_instance=RequestContext(request)
-    )
+class CreatePost(CreateView):
+    model = Post
+    fields = ['title', 'content', 'bygod']
+    template_name = 'forum/post.html'
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user if self.request.user.is_authenticated() else None
+        form.instance.node = get_object_or_404(NodeTag, pk=self.kwargs['pk'])
+        return super(CreatePost, self).form_valid(form)
 
-def blog_node(request, pk=None):
-    node = get_object_or_404(NodeTag, pk=pk)
-    posts = Post.objects.filter(bygod=True, node=node)
-    return render_to_response(
-        'forum/blog/node.html',
-        {'posts': posts, 'node': node},
-        context_instance=RequestContext(request)
-    )
-
-
-def blog_detail(request, pk=None):
-    post = get_object_or_404(Post, pk=pk)
-    return render_to_response(
-        'forum/blog/detail.html',
-        {'post': post},
-        context_instance=RequestContext(request)
-    )
-
-def index(request):
-    return redirect('api-root')
+    def get_context_data(self, **kwargs):
+        context = super(CreatePost, self).get_context_data(**kwargs)
+        context['node'] = get_object_or_404(NodeTag, pk=self.kwargs['pk'])
+        return context

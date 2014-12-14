@@ -1,7 +1,7 @@
 {% extends "forum/base.html" %}
 {% load i18n %}
     {% block container %}
-        {% regroup posts by node as post_list %}
+        {% regroup post_list by node as post_list %}
         <ul>
         {% for node in post_list %}
         <li>
@@ -19,7 +19,7 @@
         </ul>
 
         <ul>
-        {% for reply in replies %}
+        {% for reply in reply_list reversed %}
             <li><a href="{% url 'post-detail' pk=reply.post_node.pk %}">{{ reply.title }}</a></li>
         {% endfor %}
 
