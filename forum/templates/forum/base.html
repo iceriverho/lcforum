@@ -1,20 +1,24 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head lang="zh-cn">
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="{% static 'forum/mainstyle.css' %}"/>
 </head>
 <body>
 <div id="container">
     <div id="title">
-        <h1><a href="/">xmu.club</a></h1>
+        <h1><a href="/">lcfcn.com</a></h1>
+    </div>
+    <div id="navi-bar">
+        <a href="{% url 'nodetag-list' %}">所有节点</a>
+        <a href="{% url 'blog-list' %}">站长原创</a>
     </div>
     {% block container %}
 
     {% endblock %}
-    <br/>
-    <div>----</div>
-    <div id="footer">xmu.club is powered by lcforum</div>
+    <div id="footer">powered by lcforum</div>
 </div>
 
 </body>

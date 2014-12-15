@@ -1,0 +1,73 @@
+body {
+    font-size: 16px;
+    color: #4B4934;
+}
+
+a {
+    color: #4E2008;
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: #EFEACC;
+}
+
+a:visited {
+    color: #7A6A46;
+}
+
+#container  {
+    margin: auto;
+    max-width: 920px;
+}
+
+#title {
+    margin-top: 60px;
+    text-align: center;
+}
+
+#title a {
+    color: #4B4934;
+    font-family: "Courier New", courier, monospace;
+}
+
+#title h1 {
+    margin: 5px 0;
+}
+
+#navi-bar {
+    border-bottom: 1px solid #7a6a46;
+    border-top: 1px solid #7a6a46;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.thread-item {
+    height: 25px;
+    line-height: 25px;
+    overflow: hidden;
+    margin-bottom: 1px;
+
+}
+
+.thread-item:hover {
+    border-bottom: 1px solid #EFEACC;
+    margin-bottom: 0;
+}
+
+.thread-author {
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: top;
+    width: 80px;
+}
+
+#footer {
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: center;
+}
