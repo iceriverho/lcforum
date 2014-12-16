@@ -2,24 +2,18 @@
 {% load i18n %}
     {% block container %}
     <div id="thread-head">
-        <div class="thread-head">
-            <span class="thread-head-l">作&#12288&#12288者：</span>
-            <span class="thread-head-r">{{ post.author.username|default:"匿名" }}</span>
-        </div>
-        <div class="thread-head">
-            <span class="thread-head-l">发布时间：</span>
-            <span class="thread-head-r">{% language 'en' %}{{ post.created|date:"Y/m/d G:i" }}{% endlanguage %}</span>
-        </div>
-        <div class="thread-head">
-            <span class="thread-head-l">标&#12288&#12288题：</span>
-            <span class="thread-head-r">[{{ post.node.name|default:"-" }}]{{ post.title }}</span>
+        <div id="thread-head-l">{{ post.title }}</div>
+        <div id="thread-head-r">
+            由
+            {{ post.author.username|default:"匿名" }}
+            发布于
+            {{ post.created|date:"Y/m/d G:i" }}
         </div>
     </div>
     <div id="thread-body">
         {{ post.content_md|safe|default:"<i>正文无内容</i>" }}
-    </div><br/>
+    </div>
     <div><a href="{% url 'post-reply' pk=post.pk %}">回复本文</a></div>
-        <br/>
     <div id="thread-reply">
         {% for reply in post.replies.all %}
             <div class="thread-reply-head">
