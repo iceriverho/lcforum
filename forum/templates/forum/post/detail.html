@@ -2,7 +2,10 @@
 {% load i18n %}
     {% block container %}
     <div id="thread-head">
-        <div id="thread-head-l">{{ post.title }}</div>
+        <div id="thread-head-l">
+            ✎
+            {{ post.title }}
+        </div>
         <div id="thread-head-r">
             由
             {{ post.author.username|default:"匿名" }}
@@ -10,23 +13,29 @@
             {{ post.created|date:"Y/m/d G:i" }}
         </div>
     </div>
-    <div id="thread-body">
+    <div id="thread-body" class="markdown">
         {{ post.content_md|safe|default:"<i>正文无内容</i>" }}
     </div>
-    <div><a href="{% url 'post-reply' pk=post.pk %}">回复本文</a></div>
+    <div id="post-operate">
+        <a href="{% url 'post-reply' pk=post.pk %}">回复</a>
+        •
+        <a href="">编辑</a>
+        •
+        <a href="">删除</a>
+    </div>
     <div id="thread-reply">
         {% for reply in post.replies.all %}
             <div class="thread-reply-head">
                 <i>#{{ forloop.counter }}</i>
                 {{ reply.title }}
                 <i>
-                by
+                [由
                 {{ reply.author.username|default:"匿名" }}
-                @
-                {{ reply.created|date:"Y/m/d G:i" }}
+                回复于
+                {{ reply.created|date:"Y/m/d G:i" }}]
                 </i>
             </div>
-            <div class="thread-reply-body">
+            <div class="thread-reply-body markdown">
                 {{ reply.content_md|safe|default:"<i>正文无内容</i>" }}
             </div>
         {% endfor %}
