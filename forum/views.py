@@ -4,6 +4,15 @@ from django.views.generic import DetailView, ListView, CreateView
 from .models import Post, NodeTag, Reply
 
 
+class IndexView(ListView):
+    model = Post
+    template_name = 'forum/index.html'
+
+    def get_context_data(self, **kwargs):
+        return {'post_latest': self.get_queryset().filter(bygod=False).order_by('-created'),
+                'blog_latest': self.get_queryset().filter(bygod=True).order_by('-created')}
+
+
 class BlogList(ListView):
     queryset = Post.objects.filter(bygod=True).order_by('node', '-created')
     template_name = 'forum/blog/list.html'

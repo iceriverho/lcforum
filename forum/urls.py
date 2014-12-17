@@ -8,10 +8,7 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^$', ListView.as_view(
-        model=models.Post,
-        template_name='forum/post/list.html'
-    ), name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^forum/$', ListView.as_view(
         model=models.Post,
         template_name='forum/post/list.html'

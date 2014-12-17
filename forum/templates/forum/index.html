@@ -1,0 +1,35 @@
+{% extends 'forum/base.html' %}
+{% block container %}
+    <div class="index-row">
+        <div id="recommended">
+            {% with blog_latest|first as intro %}
+                {{ intro.title }}
+                {{ intro.content_md|safe }}
+            {% endwith %}
+        </div>
+        <div id="intro">
+            <div class="index-column-title">About Me</div>
+            网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍
+        </div>
+    </div>
+    <div class="index-row">
+        <div id="latest-blog">
+            <div class="index-column-title">最新博客</div>
+            <ul>
+                {% for blog in blog_latest|slice:":10" %}
+                    <li>[{{ blog.node.name }}]<a href="{% url 'blog-detail' pk=blog.pk %}">{{ blog.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="latest-post">
+            <div class="index-column-title">论坛新贴</div>
+            <ul>
+                {% for post in post_latest|slice:":10" %}
+                    <li>[{{ post.node.name }}]<a href="{% url 'post-detail' pk=post.pk %}">{{ post.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+{% endblock %}
