@@ -1,15 +1,25 @@
 {% extends 'forum/base.html' %}
+{% load staticfiles %}
 {% block container %}
     <div class="index-row">
         <div id="recommended">
+            <div class="index-column-title">最近发布</div>
             {% with blog_latest|first as intro %}
-                {{ intro.title }}
+                <div style="overflow: hidden;height: 180px;">
+                    <a href="{% url 'blog-detail' pk=intro.pk %}">
+                        <h3 style="margin: 5px 0;">{{ intro.title }}</h3>
+                    </a>
                 {{ intro.content_md|safe }}
+                </div>
             {% endwith %}
         </div>
         <div id="intro">
             <div class="index-column-title">About Me</div>
-            网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍网站介绍
+            <img src="{% static 'forum/avatar.gif' %}" alt="Photo of lcf" style="float: left; margin-right: 10px;"/>
+            <p>我叫lcf，这是我的个人网站。</p>
+            <p>网站的内容是基于<a href="{% url 'nodetag-list' %}">[节点]</a>分类的。</p>
+            <p>我使用Python/Django，但是很业余，欢迎讨论关于它们的话题。</p>
+            <p>我的GitHub: <br/><a href="https://github.com/lichifeng/">https://github.com/lichifeng/</a></p>
         </div>
     </div>
     <div class="index-row">
@@ -22,7 +32,7 @@
             </ul>
         </div>
         <div id="latest-post">
-            <div class="index-column-title">论坛新贴</div>
+            <div class="index-column-title">讨论版新贴</div>
             <ul>
                 {% for post in post_latest|slice:":10" %}
                     <li>[{{ post.node.name }}]<a href="{% url 'post-detail' pk=post.pk %}">{{ post.title }}</a></li>

@@ -1,6 +1,7 @@
 body {
     font-size: 16px;
     color: #4B4934;
+    font-family: Georgia, ​Cambria, sans-serif;
 }
 
 a {
@@ -16,11 +17,7 @@ a:visited {
     color: #7A6A46;
 }
 
-.nicer-fonts {
-    font-family: Georgia, ​Cambria, sans-serif;
-}
-
-#container  {
+#container {
     margin: auto;
     max-width: 700px;
 }
@@ -82,12 +79,14 @@ a:visited {
     vertical-align: top;
     width: 80px;
 }
+
 /*forum index end*/
 
 /*nodetag list begin*/
 #nodetag-list {
     font-size: 18px;
 }
+
 /*nodetag list end*/
 
 /*thread detail begin*/
@@ -127,12 +126,13 @@ a:visited {
 .thread-reply-head i {
     font-size: 13px;
 }
+
 /*thread detail end*/
 
 /*markdown begin*/
 .markdown {
-    font-family: Georgia, ​Cambria, sans-serif;
     font-size: 16px;
+    line-height: 25px;
 }
 
 .markdown a {
@@ -161,6 +161,7 @@ a:visited {
 .markdown h4, .markdown h5, .markdown h6 {
     font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
 }
+
 /*markdown end*/
 
 /*index begin*/
@@ -168,12 +169,16 @@ a:visited {
     height: 300px;
     margin-top: 15px;
     overflow: hidden;
+    line-height: 25px;
 }
 
 #recommended {
-    height: 100%;
-    width: 63%;
+    overflow: hidden;
+    height: 210px;
+    padding-bottom: 90px;
+    width: 60%;
     float: left;
+    background: url("recommendback.gif") no-repeat bottom center;
 }
 
 #intro {
@@ -210,16 +215,17 @@ a:visited {
 .index-row li {
     list-style-type: none;
     height: 25px;
-    line-height: 25px;
+    /*line-height: 25px;*/
     margin-bottom: 1px;
     overflow: hidden;
 }
 
 .index-row li:hover {
     height: 25px;
-    line-height: 25px;
+    /*line-height: 25px;*/
     margin-bottom: 0;
     border-bottom: 1px dotted;
     background-color: #EFEACC;
 }
+
 /*index end*/
