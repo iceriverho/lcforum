@@ -3,14 +3,19 @@
     {% block container %}
     <div id="thread-head">
         <div id="thread-head-l">
-            ✎
-            {{ post.title }}
+            <div id="thread-head-t">
+                ✎
+                {{ post.title }}
+            </div>
+            <div id="thread-head-b">
+                由
+                {{ post.author.username|default:"匿名" }}
+                发布于
+                {{ post.created|date:"Y/m/d G:i" }}
+            </div>
         </div>
         <div id="thread-head-r">
-            由
-            {{ post.author.username|default:"匿名" }}
-            发布于
-            {{ post.created|date:"Y/m/d G:i" }}
+            <a href="{% url 'nodetag-detail' pk=post.node.pk %}">➥返回<b>{{ post.node.name }}</b>节点</a>
         </div>
     </div>
     <div id="thread-body" class="markdown">

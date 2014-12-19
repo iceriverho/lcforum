@@ -90,11 +90,25 @@ a:visited {
 /*nodetag list end*/
 
 /*thread detail begin*/
+#thread-head {
+    overflow: hidden;
+}
+
 #thread-head-l {
-    font-size: 25px;
+    float: left;
+    width: 80%;
 }
 
 #thread-head-r {
+    float: right;
+    padding-top: 0.4em;
+}
+
+#thread-head-t {
+    font-size: 25px;
+}
+
+#thread-head-b {
     font-size: 13px;
     margin-top: 5px;
     font-style: italic;
@@ -229,3 +243,14 @@ a:visited {
 }
 
 /*index end*/
+
+/*nodetag detail begin*/
+.guide-bar {
+    margin-bottom: 5px;
+}
+
+.guide-bar span {
+    margin-left: 1em;
+    border-bottom: 1px dotted;
+}
+/*nodetag detail end*/

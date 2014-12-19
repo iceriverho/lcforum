@@ -1,12 +1,12 @@
 {% extends "forum/base.html" %}
 {% load i18n %}
     {% block container %}
-        <div>
+        <div class="guide-bar">
             <a href="/">首页</a>
             »
-            <b>[{{ nodetag.name }}]</b>
-            <a href="{% url 'nodetag-post' pk=nodetag.pk %}">发表内容</a>
-        </div><br/>
+            <b>{{ nodetag.name }}</b>
+            <span><a href="{% url 'nodetag-post' pk=nodetag.pk %}">✍发表内容</a></span>
+        </div>
     <div id="thread-list">
         {% for post in nodetag.posts.all reversed %}
         <div class="thread-item">
