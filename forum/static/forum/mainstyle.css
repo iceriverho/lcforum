@@ -17,6 +17,12 @@ a:visited {
     color: #7A6A46;
 }
 
+.float-right {
+    display: inline-block;
+    float: right;
+    vertical-align: top;
+}
+
 #container {
     margin: auto;
     max-width: 700px;
@@ -229,7 +235,6 @@ a:visited {
 .index-row li {
     list-style-type: none;
     height: 25px;
-    /*line-height: 25px;*/
     margin-bottom: 1px;
     overflow: hidden;
 }
@@ -247,6 +252,8 @@ a:visited {
 /*nodetag detail begin*/
 .guide-bar {
     margin-bottom: 5px;
+    height: 25px;
+    line-height: 25px;
 }
 
 .guide-bar span {
@@ -254,3 +261,56 @@ a:visited {
     border-bottom: 1px dotted;
 }
 /*nodetag detail end*/
+
+/*form style begin*/
+.errorlist {
+    list-style-type: square;
+    color: #a23607;
+    font-weight: bold;
+}
+
+form label {
+    display: block;
+    float: left;
+    height: 31px;
+    line-height: 31px;
+    width: 15%;
+    font-weight: bold;
+}
+
+input[type='text'], textarea {
+    border: 1px solid #4b4934;
+    color: inherit;
+    font-size: inherit;
+    padding: 2px 4px;
+}
+
+input[type='text'] {
+    height: 25px;
+    width: 80%;
+}
+
+input[type='checkbox'] {
+    margin: 0;
+    height: 31px;
+    line-height: 31px;
+}
+
+textarea {
+    min-height: 200px;
+    min-width: 80%;
+    max-width: 80%;
+}
+
+.helptext {
+    display: block;
+    font-size: 13px;
+    margin: 5px auto auto 15%;
+    color: #999;
+}
+
+.error-item {
+    font-weight: bold;
+    color: #A23607;
+}
+/*form style end*/

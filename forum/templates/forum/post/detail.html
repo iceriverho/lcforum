@@ -41,7 +41,7 @@
                 </i>
             </div>
             <div class="thread-reply-body markdown">
-                {{ reply.content_md|safe|default:"<i>正文无内容</i>" }}
+                {{ reply.content_md|safe }}
             </div>
         {% endfor %}
     </div>
