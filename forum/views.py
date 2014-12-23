@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
 
 from .models import Post, NodeTag, Reply
+from .forms import ReplyForm
 
 
 class IndexView(ListView):
@@ -34,8 +37,7 @@ class BlogListByNode(DetailView):
 
 
 class ReplyToPost(CreateView):
-    model = Reply
-    fields = ['title', 'content', 'bygod']
+    form_class = ReplyForm
     template_name = 'forum/reply.html'
     post_node = None
 
