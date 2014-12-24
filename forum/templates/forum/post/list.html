@@ -2,18 +2,31 @@
 {% load i18n %}
     {% block container %}
 
-    <div id="thread-list">
-        {% for thread in post_list reversed %}
-        <div class="thread-item">
-            <span class="thread-author">{{ thread.author.username|default:"匿名" }}</span>
-            ▸
-            <span class="thread-created">{% language 'en' %}{{ thread.created|date:"M d, Y" }}{% endlanguage %}</span>
-            ▸
-            <span class="thread-title">
-                [<a href="{% url 'nodetag-detail' pk=thread.node.pk %}">{{ thread.node.name|default:"-" }}</a>]
-                <a href="{% url 'post-detail' pk=thread.pk %}">{{ thread.title }}</a>
-            </span>
+        <div id="thread-list">
+            {% for thread in post_list reversed %}
+            <div class="thread-item">
+                <span class="thread-author">{{ thread.author.username|default:"匿名" }}</span>
+                ▸
+                <span class="thread-created">{% language 'en' %}{{ thread.created|date:"M d, Y" }}{% endlanguage %}</span>
+                ▸
+                <span class="thread-title">
+                    [<a href="{% url 'nodetag-detail' pk=thread.node.pk %}">{{ thread.node.name|default:"-" }}</a>]
+                    <a href="{% url 'post-detail' pk=thread.pk %}">{{ thread.title }}</a>
+                </span>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+        <div id="page-navi">
+            <a href="{% url 'forum-index' %}">第一页</a>
+            «
+            {% if page_obj.has_previous %}
+                <a href="{% url 'forum-index' %}?p={{ page_obj.previous_page_number }}">上一页</a>
+            {% endif %}
+            <span>{{ page_obj.number }}/{{ paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="{% url 'forum-index' %}?p={{ page_obj.next_page_number }}">下一页</a>
+            {% endif %}
+            »
+            <a href="{% url 'forum-index' %}?p=last">最后一页</a>
+        </div>
     {% endblock %}

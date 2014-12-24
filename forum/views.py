@@ -16,6 +16,23 @@ class IndexView(ListView):
                 'blog_latest': self.get_queryset().filter(bygod=True).order_by('-created')}
 
 
+class NodetagDetail(ListView):
+    model = Post
+    template_name = 'forum/nodetag/detail.html'
+    paginate_by = 25
+    page_kwarg = 'p'
+
+    def get_queryset(self):
+        all_posts = super(NodetagDetail, self).get_queryset()
+        posts_belong_to_this_node = all_posts.filter(node=self.kwargs['pk'])
+        return posts_belong_to_this_node
+
+    def get_context_data(self, **kwargs):
+        context = super(NodetagDetail, self).get_context_data(**kwargs)
+        context['nodetag'] = get_object_or_404(NodeTag, pk=self.kwargs['pk'])
+        return context
+
+
 class BlogList(ListView):
     queryset = Post.objects.filter(bygod=True).order_by('node', '-created')
     template_name = 'forum/blog/list.html'
