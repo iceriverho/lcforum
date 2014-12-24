@@ -11,7 +11,9 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^forum/$', ListView.as_view(
         model=models.Post,
-        template_name='forum/post/list.html'
+        template_name='forum/post/list.html',
+        paginate_by=25,
+        page_kwarg='p'
     ), name='forum-index'),
     url(r'^forum/thread/(?P<pk>\d+)/$', views.DetailView.as_view(
         model=models.Post,
@@ -22,10 +24,7 @@ urlpatterns = [
         model=models.NodeTag,
         template_name='forum/nodetag/list.html'
     ), name='nodetag-list'),
-    url(r'^forum/node/(?P<pk>\d+)/$', views.DetailView.as_view(
-        model=models.NodeTag,
-        template_name='forum/nodetag/detail.html'
-    ), name='nodetag-detail'),
+    url(r'^forum/node/(?P<pk>\d+)/$', views.NodetagDetail.as_view(), name='nodetag-detail'),
     url(r'^forum/node/(?P<pk>\d+)/post/$', views.CreatePost.as_view(), name='nodetag-post'),
     url(r'^blog/$', views.BlogList.as_view(), name='blog-list'),
     url(r'^blog/(?P<pk>\d+)/$', views.BlogListByNode.as_view(), name='blog-node'),

@@ -266,6 +266,18 @@ a:visited {
     margin-left: 1em;
     border-bottom: 1px dotted;
 }
+
+#page-navi {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+}
+
+#page-navi span, #page-navi a {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #7A6A46;
+}
 /*nodetag detail end*/
 
 /*form style begin*/
