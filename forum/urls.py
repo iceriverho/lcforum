@@ -32,4 +32,6 @@ urlpatterns = [
         model=models.Post,
         template_name='forum/blog/detail.html'
     ), name='blog-detail'),
+    url(r'^auth/reg/$', views.UserView.as_view(type='reg'), name='user-reg'),
+    url(r'^auth/login/$', views.UserView.as_view(type='login'), name='user-login'),
 ]

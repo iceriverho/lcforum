@@ -287,18 +287,18 @@ form label {
     float: left;
     height: 31px;
     line-height: 31px;
-    width: 15%;
+    width: 18%;
     font-weight: bold;
 }
 
-input[type='text'], textarea {
+input[type='text'], input[type='email'], textarea {
     border: 1px solid #4b4934;
     color: inherit;
     font-size: inherit;
     padding: 2px 4px;
 }
 
-input[type='text'] {
+input[type='text'], input[type='email'] {
     height: 25px;
     width: 80%;
 }
@@ -318,7 +318,7 @@ textarea {
 .helptext {
     display: block;
     font-size: 13px;
-    margin: 5px auto auto 15%;
+    margin: 5px auto auto 18%;
     color: #999;
 }
 
