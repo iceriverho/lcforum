@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '+2l%2v75%#^x-vy!35(eokil(!xx**pbzxx@*(4c1o6x&6p9rr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = [
     '.xmu.club',
@@ -100,12 +100,6 @@ CACHES = {
         'LOCATION': 'unix:/tmp/memcached.sock',
     }
 }
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': 'unix:/tmp/memcached.sock',
-#     }
-# }
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
