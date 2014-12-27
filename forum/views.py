@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, FormView
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.forms.models import modelform_factory
+from django.forms.widgets import PasswordInput
 
 from .models import Post, NodeTag, Reply
 from .forms import ReplyForm
@@ -87,3 +91,50 @@ class CreatePost(CreateView):
         context = super(CreatePost, self).get_context_data(**kwargs)
         context['node'] = get_object_or_404(NodeTag, pk=self.kwargs['pk'])
         return context
+
+
+class RegView(FormView):
+    template_name = 'forum/auth/reg.html'
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        username = request.POST['username']
+        email = request.POST.get('email', None)
+        password = request.POST['password']
+
+        if form.is_valid():
+            User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            self.object = authenticate(
+                username=username,
+                password=password
+            )
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def get_success_url(self):
+        # See this: http://stackoverflow.com/a/9899170
+        return self.kwargs.get('next', '/')
+
+    def form_valid(self, form):
+        # See this: http://stackoverflow.com/a/6039782
+        login(self.request, self.object)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_form_class(self):
+        return modelform_factory(
+            User,
+            fields=['username', 'email', 'password'],
+            widgets={
+                'password': PasswordInput()
+            },
+            labels={
+                'email': u"电子邮箱"
+            }
+        )
