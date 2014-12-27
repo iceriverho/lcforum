@@ -5,9 +5,15 @@
         »
         <b>用户注册</b>
     </div>
+    {% if user.is_authenticated %}
+    <ul class="errorlist">
+        <li>注册新用户前请 <a href="{% url 'user-logout' %}?next={% url 'user-reg' %}">退出当前用户</a>。</li>
+    </ul>
+    {% else %}
     <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
         <input type="submit" value="注册新用户" />
     </form>
+    {% endif %}
 {% endblock %}

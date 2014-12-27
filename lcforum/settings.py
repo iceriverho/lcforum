@@ -100,3 +100,8 @@ TEMPLATE_DIRS = (
 #         'LOCATION': 'unix:/tmp/memcached.sock',
 #     }
 # }
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/auth/login/'
+
+TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth', )

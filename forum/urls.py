@@ -32,6 +32,9 @@ urlpatterns = [
         model=models.Post,
         template_name='forum/blog/detail.html'
     ), name='blog-detail'),
-    url(r'^auth/reg/$', views.UserView.as_view(type='reg'), name='user-reg'),
-    url(r'^auth/login/$', views.UserView.as_view(type='login'), name='user-login'),
+    url(r'^auth/reg/$', views.RegView.as_view(), name='user-reg'),
+    url(r'^auth/login/$', 'django.contrib.auth.views.login', {
+        'template_name': 'forum/auth/login.html'
+    }, name='user-login'),
+    url(r'^auth/logout/$', 'django.contrib.auth.views.logout_then_login', name='user-logout'),
 ]

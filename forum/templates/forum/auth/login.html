@@ -5,6 +5,11 @@
         »
         <b>用户登录</b>
     </div>
+    {% if user.is_authenticated %}
+    <ul class="errorlist">
+        <li>你已经以 <b>{{ user.username }}</b> 登录，重复登录会退出当前用户。</li>
+    </ul>
+    {% endif %}
     <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}

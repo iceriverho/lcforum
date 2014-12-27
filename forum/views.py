@@ -2,9 +2,10 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView, FormView
-from django.views.generic.edit import ModelFormMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.forms.models import modelform_factory
+from django.forms.widgets import PasswordInput
 
 from .models import Post, NodeTag, Reply
 from .forms import ReplyForm
@@ -92,62 +93,48 @@ class CreatePost(CreateView):
         return context
 
 
-# 下面这个类想自己重写一下，比如把username, password作为类的属性之类，可能会比较方便
-class UserView(ModelFormMixin, FormView):
-    model = User
-    fields = ['username', 'email', 'password']
-    template_name = 'forum/auth/'
-    type = 'login'
-    object = None
-
-    def get(self, request, *args, **kwargs):
-        if self.type == 'login':
-            self.fields = ['username', 'password']
-            self.template_name += 'login.html'
-        else:
-            self.template_name += 'reg.html'
-
-        return super(UserView, self).get(request, *args, **kwargs)
+class RegView(FormView):
+    template_name = 'forum/auth/reg.html'
 
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
 
-        if self.type == 'login':
-            self.fields = ['username', 'password']
+        username = request.POST['username']
+        email = request.POST.get('email', None)
+        password = request.POST['password']
 
-            self.template_name += 'login.html'
-            username = request.POST['username']
-            password = request.POST['password']
-            self.object = authenticate(username=username, password=password)
-            if self.object is None:
-                form.add_error(None, u"用户名或密码错误")
-                return self.form_invalid(form)
-            else:
-                return self.form_valid(form)
-
+        if form.is_valid():
+            User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            self.object = authenticate(
+                username=username,
+                password=password
+            )
+            return self.form_valid(form)
         else:
-            self.template_name += 'reg.html'
-
-            if form.is_valid():
-                self.model.objects.create_user(
-                    username=request.POST['username'],
-                    email=request.POST['email'],
-                    password=request.POST['password']
-                )
-                self.object = authenticate(
-                    username=request.POST['username'],
-                    password=request.POST['password']
-                )
-                return self.form_valid(form)
-            else:
-                return self.form_invalid(form)
+            return self.form_invalid(form)
 
     def get_success_url(self):
         # See this: http://stackoverflow.com/a/9899170
-        return self.request.META['HTTP_REFERER']
+        return self.kwargs.get('next', '/')
 
     def form_valid(self, form):
         # See this: http://stackoverflow.com/a/6039782
         login(self.request, self.object)
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_form_class(self):
+        return modelform_factory(
+            User,
+            fields=['username', 'email', 'password'],
+            widgets={
+                'password': PasswordInput()
+            },
+            labels={
+                'email': u"电子邮箱"
+            }
+        )
