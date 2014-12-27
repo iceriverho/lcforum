@@ -8,7 +8,6 @@ from django.forms.models import modelform_factory
 from django.forms.widgets import PasswordInput
 
 from .models import Post, NodeTag, Reply
-from .forms import ReplyForm
 
 
 class IndexView(ListView):
@@ -58,7 +57,8 @@ class BlogListByNode(DetailView):
 
 
 class ReplyToPost(CreateView):
-    form_class = ReplyForm
+    model = Reply
+    fields = ['title', 'content', 'bygod']
     template_name = 'forum/reply.html'
     post_node = None
 
@@ -76,6 +76,11 @@ class ReplyToPost(CreateView):
         context['post_node'] = self.post_node
         return context
 
+    def get_form_class(self):
+        if not self.request.user.is_superuser:
+            self.fields = ['title', 'content']
+        return super(ReplyToPost, self).get_form_class()
+
 
 class CreatePost(CreateView):
     model = Post
@@ -91,6 +96,22 @@ class CreatePost(CreateView):
         context = super(CreatePost, self).get_context_data(**kwargs)
         context['node'] = get_object_or_404(NodeTag, pk=self.kwargs['pk'])
         return context
+
+    def get_form_class(self):
+        if not self.request.user.is_superuser:
+            # 一开始我这里用的是self.fields.remove('bygod')
+            # 但是只能生效一次，然后就会出现异常提示说要REMOVE的ITEM不存在
+            # 为什么呢？
+            # >>> class Test(object):
+            # ...     i = [1, 2, 3]
+            # >>> id(Test.i)
+            # 41923368
+            # >>> t = Test()
+            # >>> id(t.i)
+            # 41923368
+            # 我想以上就是答案了 :)
+            self.fields = ['title', 'content']
+        return super(CreatePost, self).get_form_class()
 
 
 class RegView(FormView):

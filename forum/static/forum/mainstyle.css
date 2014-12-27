@@ -4,6 +4,12 @@ body {
     font-family: Georgia, "Times New Roman", Times, serif, sans-serif;
 }
 
+div {
+    word-break: break-all;
+    word-wrap: break-word;
+    -ms-word-wrap: break-word;
+}
+
 a {
     color: #4E2008;
     text-decoration: none;
@@ -329,10 +335,5 @@ textarea {
     font-size: 13px;
     margin: 5px auto auto 18%;
     color: #999;
-}
-
-.error-item {
-    font-weight: bold;
-    color: #A23607;
 }
 /*form style end*/
