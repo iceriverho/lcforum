@@ -1,48 +1,64 @@
 {% extends "forum/base.html" %}
 {% load i18n %}
     {% block container %}
-    <div id="thread-head">
-        <div id="thread-head-l">
-            <div id="thread-head-t">
-                ✎
-                {{ post.title }}
+        <div id="thread-head">
+            <div id="thread-head-l">
+                <div id="thread-head-t">
+                    ✎
+                    {{ post.title }}
+                </div>
+                <div id="thread-head-b">
+                    由
+                    {{ post.author.username|default:"游客" }}
+                    发布于
+                    {{ post.created|date:"Y/m/d G:i" }}
+                </div>
             </div>
-            <div id="thread-head-b">
-                由
-                {{ post.author.username|default:"匿名" }}
-                发布于
-                {{ post.created|date:"Y/m/d G:i" }}
+            <div id="thread-head-r">
+                <a href="{% url 'nodetag-detail' pk=post.node.pk %}">➥返回<b>{{ post.node.name }}</b>节点</a>
             </div>
         </div>
-        <div id="thread-head-r">
-            <a href="{% url 'nodetag-detail' pk=post.node.pk %}">➥返回<b>{{ post.node.name }}</b>节点</a>
+        <div id="thread-body" class="markdown">
+            {{ post.content_md|safe|default:"<i>正文无内容</i>" }}
         </div>
-    </div>
-    <div id="thread-body" class="markdown">
-        {{ post.content_md|safe|default:"<i>正文无内容</i>" }}
-    </div>
-    <div id="post-operate">
-        <a href="{% url 'post-reply' pk=post.pk %}">回复</a>
-        •
-        <a href="">编辑</a>
-        •
-        <a href="">删除</a>
-    </div>
-    <div id="thread-reply">
-        {% for reply in post.replies.all %}
-            <div class="thread-reply-head">
-                <i>#{{ forloop.counter }}</i>
-                {{ reply.title }}
-                <i>
-                [由
-                {{ reply.author.username|default:"匿名" }}
-                回复于
-                {{ reply.created|date:"Y/m/d G:i" }}]
-                </i>
+        <div id="post-operate">
+            <a href="{% url 'post-reply' pk=post.pk %}">回复</a>
+            •
+            <a href="">编辑</a>
+            •
+            <a href="">删除</a>
+        </div>
+        <div id="thread-reply">
+            {% for reply in object_list %}
+                <div class="thread-reply-head">
+                    {# I got inspired from: http://stackoverflow.com/a/6285428 #}
+                    <i>#{{ assist_num|add:forloop.revcounter }}</i>
+                    {{ reply.title }}
+                    <i>
+                    [由
+                    {{ reply.author.username|default:"游客" }}
+                    回复于
+                    {{ reply.created|date:"Y/m/d G:i" }}]
+                    </i>
+                </div>
+                <div class="thread-reply-body markdown">
+                    {{ reply.content_md|safe }}
+                </div>
+            {% endfor %}
+        </div>
+        {% if paginator.num_pages > 1 %}
+            <div id="page-navi">
+                <a href="{% url 'post-detail' pk=post.pk %}">第一页</a>
+                «
+                {% if page_obj.has_previous %}
+                    <a href="{% url 'post-detail' pk=post.pk %}?p={{ page_obj.previous_page_number }}">上一页</a>
+                {% endif %}
+                <span>{{ page_obj.number }}/{{ paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="{% url 'post-detail' pk=post.pk %}?p={{ page_obj.next_page_number }}">下一页</a>
+                {% endif %}
+                »
+                <a href="{% url 'post-detail' pk=post.pk %}?p=last">最后一页</a>
             </div>
-            <div class="thread-reply-body markdown">
-                {{ reply.content_md|safe }}
-            </div>
-        {% endfor %}
-    </div>
+        {% endif %}
     {% endblock %}

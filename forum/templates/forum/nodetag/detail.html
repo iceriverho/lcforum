@@ -10,7 +10,7 @@
         <div id="thread-list">
             {% for post in object_list reversed %}
             <div class="thread-item">
-                <span class="thread-author">{{ post.author.username|default:"匿名" }}</span>
+                <span class="thread-author">{{ post.author.username|default:"游客" }}</span>
                 ▸
                 <span class="thread-created">{% language 'en' %}{{ post.created|date:"M d, Y" }}{% endlanguage %}</span>
                 ▸

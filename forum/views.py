@@ -36,6 +36,29 @@ class NodetagDetail(ListView):
         return context
 
 
+class ThreadDetail(ListView):
+    model = Reply
+    template_name = 'forum/post/detail.html'
+    paginate_by = 20
+    page_kwarg = 'p'
+
+    def get_queryset(self):
+        all_replies = super(ThreadDetail, self).get_queryset()
+        replies_belong_to_this_post = all_replies.filter(post_node=self.kwargs['pk']).order_by('-created')
+        return replies_belong_to_this_post
+
+    def get_context_data(self, **kwargs):
+        context = super(ThreadDetail, self).get_context_data(**kwargs)
+        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
+        # assist_num will be used in the template for calculating index of a reply
+        current_page = self.request.GET.get(self.page_kwarg, 1)
+        if current_page == 'last' or int(current_page) == context['paginator'].num_pages:
+            context['assist_num'] = 0
+        else:
+            context['assist_num'] = context['paginator'].count - self.paginate_by * int(current_page)
+        return context
+
+
 class BlogList(ListView):
     queryset = Post.objects.filter(bygod=True).order_by('node', '-created')
     template_name = 'forum/blog/list.html'

@@ -15,10 +15,7 @@ urlpatterns = [
         paginate_by=25,
         page_kwarg='p'
     ), name='forum-index'),
-    url(r'^forum/thread/(?P<pk>\d+)/$', views.DetailView.as_view(
-        model=models.Post,
-        template_name='forum/post/detail.html'
-    ), name='post-detail'),
+    url(r'^forum/thread/(?P<pk>\d+)/$', views.ThreadDetail.as_view(), name='post-detail'),
     url(r'^forum/thread/(?P<pk>\d+)/reply/$', views.ReplyToPost.as_view(), name='post-reply'),
     url(r'^forum/node/$', views.ListView.as_view(
         model=models.NodeTag,
