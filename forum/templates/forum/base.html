@@ -16,6 +16,11 @@
         <a href="{% url 'blog-list' %}">博客|BLOG</a>
         <a href="{% url 'forum-index' %}">讨论版|FORUM</a>
         <a href="{% url 'nodetag-list' %}">所有节点|NODES</a>
+        {% if user.is_authenticated %}
+            <span id="current_id">ID: {{ user.username }} (<a href="{% url 'user-logout' %}">退出</a>)</span>
+        {% else %}
+            <a href="{% url 'user-login' %}">登录|LOGIN</a>
+        {% endif %} 
     </div>
     {% block container %}
 

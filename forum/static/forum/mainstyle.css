@@ -50,11 +50,18 @@ a:visited {
     line-height: 30px;
     text-align: center;
     margin-bottom: 10px;
+    position: relative;
 }
 
 #navi-bar a {
     color: #4b4934;
     margin: auto 4px;
+}
+
+#current_id {
+    font-size: 13px;
+    position: absolute;
+    right: 0;
 }
 
 #footer {

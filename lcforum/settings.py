@@ -103,5 +103,6 @@ TEMPLATE_DIRS = (
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
+LOGOUT_URL = '/auth/logout/'
 
 TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth', )
