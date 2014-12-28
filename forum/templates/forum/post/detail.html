@@ -13,10 +13,10 @@
                         <b>{{ post.author.username }}</b>
                         {% if post.author.is_superuser %}<em class="adminlogo"></em>{% endif %}
                     {% elif post.author %}
-                        {{ post.author.username }}({{ post.author.email|default:"-"|strip_email_at }})
+                        {{ post.author.username }}<{{ post.author.email|default:"-"|strip_email_at }}>
                     {% else %}
                         游客:
-                        {{ post.guest_name }}({{ post.guest_email|default:"-"|strip_email_at }})
+                        {{ post.guest_name }}<{{ post.guest_email|default:"-"|strip_email_at }}>
                     {% endif %}
                     发布于
                     {{ post.created|date:"Y/m/d G:i" }}
@@ -45,10 +45,10 @@
                         <b>{{ reply.author.username }}</b>
                         {% if reply.author.is_superuser %}<em class="adminlogo"></em>{% endif %}
                     {% elif reply.author %}
-                        {{ reply.author.username }}({{ reply.author.email|default:"-"|strip_email_at }})
+                        {{ reply.author.username }}<{{ reply.author.email|default:"-"|strip_email_at }}>
                     {% else %}
                         游客:
-                        {{ reply.guest_name }}({{ reply.guest_email|default:"-"|strip_email_at }})
+                        {{ reply.guest_name }}<{{ reply.guest_email|default:"-"|strip_email_at }}>
                     {% endif %} 
 
                     在
