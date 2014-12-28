@@ -22,14 +22,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '+2l%2v75%#^x-vy!35(eokil(!xx**pbzxx@*(4c1o6x&6p9rr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = [
-    '.xmu.club',
-    '.xmu.club.'
-]
+# ALLOWED_HOSTS = [
+# '.xmu.club',
+#     '.xmu.club.'
+# ]
 
 
 # Application definition
@@ -46,15 +46,15 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'lcforum.urls'
@@ -87,7 +87,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = "/home/lcf/django-www/lcforum/static/"
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 TEMPLATE_DIRS = (
@@ -96,8 +96,7 @@ TEMPLATE_DIRS = (
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'unix:/tmp/memcached.sock',
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 
