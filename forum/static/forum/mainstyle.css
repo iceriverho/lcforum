@@ -29,6 +29,14 @@ a:visited {
     vertical-align: top;
 }
 
+.adminlogo {
+    background: url("adminlogo.gif");
+    display: inline-block;
+    width: 30px;
+    height: 16px;
+    vertical-align: bottom;
+}
+
 #container {
     margin: auto;
     max-width: 700px;
@@ -155,9 +163,6 @@ a:visited {
     border-top: 1px dashed;
     padding: 4px 0;
     background-color: #FBFAF2;
-}
-
-.thread-reply-head i {
     font-size: 13px;
 }
 
@@ -335,10 +340,5 @@ textarea {
     font-size: 13px;
     margin: 5px auto auto 18%;
     color: #999;
-}
-
-.error-item {
-    font-weight: bold;
-    color: #A23607;
 }
 /*form style end*/
