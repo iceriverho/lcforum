@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.core import validators
 import markdown
 
 # 一般来说，默认只有主键被索引了（db_index = True）
@@ -23,13 +24,25 @@ class PostBase(DateTimeBase):
     }, help_text=u"☞标题为必填且不能超过100个字符",
                              verbose_name=u"标题")
     content = models.TextField(blank=True, null=True,
-                               help_text=u"☞正文可以留空，但不要输入无意义的内容",
-                               verbose_name=u"正文")
+                               help_text=u"☞内容可以留空，但不要输入无意义的内容",
+                               verbose_name=u"内容")
     author = models.ForeignKey(User, blank=True, null=True, related_name='%(class)s', on_delete=models.SET_NULL)
     content_md = models.TextField(blank=True, null=True)
     bygod = models.BooleanField(blank=True, default=False,
                                 help_text=u"☞将这篇文章归入管理员文集",
                                 verbose_name=u"归档")
+    guest_name = models.CharField(max_length=30, default="Guest", verbose_name=u"游客称呼", blank=True, null=True,
+                                  validators=[
+                                      validators.RegexValidator(r'^[\w.@+-]+$', u"名字中包含不允许的字符.", 'invalid')
+                                  ])
+    guest_email = models.EmailField(
+        max_length=254, verbose_name=u"游客联系方式", blank=True, null=True,
+        help_text=u"您的邮件地址在显示时会将@替换为[at]",
+        error_messages={
+            'invalid': u"您输入了一个无效的邮件地址，请修改或留空"
+        }
+        )
+    ip_addr = models.IPAddressField(default='0.0.0.0', verbose_name=u"IP地址", help_text=u"发信人的IP地址")
 
     def save(self, *args, **kwargs):
         self.bygod = self.bygod if getattr(self.author, 'is_superuser', False) else False
@@ -67,6 +80,9 @@ class Post(PostBase):
     def __unicode__(self):
         return self.title
 
+    class Meta:
+        ordering = ['-pk']
+
 
 class Reply(PostBase):
     post_node = models.ForeignKey(Post, null=True, related_name='replies', on_delete=models.SET_NULL)
@@ -82,3 +98,4 @@ class Reply(PostBase):
 
     class Meta:
         verbose_name_plural = 'replies'
+        ordering = ['-pk']

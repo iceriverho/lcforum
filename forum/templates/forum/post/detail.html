@@ -1,5 +1,5 @@
 {% extends "forum/base.html" %}
-{% load i18n %}
+{% load forum_strip_email %}
     {% block container %}
         <div id="thread-head">
             <div id="thread-head-l">
@@ -9,7 +9,15 @@
                 </div>
                 <div id="thread-head-b">
                     由
-                    {{ post.author.username|default:"游客" }}
+                    {% if post.author.is_superuser %}
+                        <b>{{ post.author.username }}</b>
+                        {% if post.author.is_superuser %}<em class="adminlogo"></em>{% endif %}
+                    {% elif post.author %}
+                        {{ post.author.username }}({{ post.author.email|default:"-"|strip_email_at }})
+                    {% else %}
+                        游客:
+                        {{ post.guest_name }}({{ post.guest_email|default:"-"|strip_email_at }})
+                    {% endif %}
                     发布于
                     {{ post.created|date:"Y/m/d G:i" }}
                 </div>
@@ -32,14 +40,20 @@
             {% for reply in object_list %}
                 <div class="thread-reply-head">
                     {# I got inspired from: http://stackoverflow.com/a/6285428 #}
-                    <i>#{{ assist_num|add:forloop.revcounter }}</i>
-                    {{ reply.title }}
-                    <i>
-                    [由
-                    {{ reply.author.username|default:"游客" }}
-                    回复于
-                    {{ reply.created|date:"Y/m/d G:i" }}]
-                    </i>
+                    <i>#{{ page_obj.start_index|add:forloop.counter0 }}</i>
+                    {% if reply.author.is_superuser %}
+                        <b>{{ reply.author.username }}</b>
+                        {% if reply.author.is_superuser %}<em class="adminlogo"></em>{% endif %}
+                    {% elif reply.author %}
+                        {{ reply.author.username }}({{ reply.author.email|default:"-"|strip_email_at }})
+                    {% else %}
+                        游客:
+                        {{ reply.guest_name }}({{ reply.guest_email|default:"-"|strip_email_at }})
+                    {% endif %} 
+
+                    在
+                    {{ reply.created|date:"Y/m/d G:i" }}
+                    回复:
                 </div>
                 <div class="thread-reply-body markdown">
                     {{ reply.content_md|safe }}

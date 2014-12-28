@@ -3,7 +3,7 @@
     {% block container %}
 
         <div id="thread-list">
-            {% for thread in post_list reversed %}
+            {% for thread in post_list %}
             <div class="thread-item">
                 <span class="thread-author">{{ thread.author.username|default:"游客" }}</span>
                 ▸
