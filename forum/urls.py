@@ -23,12 +23,6 @@ urlpatterns = [
     ), name='nodetag-list'),
     url(r'^forum/node/(?P<pk>\d+)/$', views.NodetagDetail.as_view(), name='nodetag-detail'),
     url(r'^forum/node/(?P<pk>\d+)/post/$', views.CreatePost.as_view(), name='nodetag-post'),
-    url(r'^blog/$', views.BlogList.as_view(), name='blog-list'),
-    url(r'^blog/(?P<pk>\d+)/$', views.BlogListByNode.as_view(), name='blog-node'),
-    url(r'^blog/article/(?P<pk>\d+)/$', views.DetailView.as_view(
-        model=models.Post,
-        template_name='forum/blog/detail.html'
-    ), name='blog-detail'),
     url(r'^auth/reg/$', views.RegView.as_view(), name='user-reg'),
     url(r'^auth/login/$', 'django.contrib.auth.views.login', {
         'template_name': 'forum/auth/login.html'
