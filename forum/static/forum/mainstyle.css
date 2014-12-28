@@ -172,27 +172,37 @@ a:visited {
 .markdown {
     font-size: 16px;
     line-height: 25px;
+    overflow: hidden;
+}
+
+.codehilite {
+    overflow: auto;
 }
 
 .markdown a {
     border-bottom: 1px dotted;
 }
 
+.markdown blockquote {
+    margin: auto 20px;
+}
+
 .markdown blockquote p {
     padding: 0.3em 0.5em;
-    border-left: 4px solid #D7D2B7;
+    border-left: 4px solid #ccc;
+    background-color: #f8f8f8;
     font-style: italic;
 }
 
 .markdown pre {
-    border-top: 1px solid #d7d2b7;
-    border-bottom: 1px solid #d7d2b7;;
-    background-color: #efeacc;
-    padding: 0.3em;
+    padding: 0.5em 0.8em;
+    margin: 0 auto;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 
 .markdown code {
-    background-color: #efeacc;
+    background-color: #f8f8f8;
     font-family: "Courier New", courier, monospace;
 }
 

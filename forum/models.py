@@ -46,7 +46,16 @@ class PostBase(DateTimeBase):
 
     def save(self, *args, **kwargs):
         self.bygod = self.bygod if getattr(self.author, 'is_superuser', False) else False
-        self.content_md = markdown.markdown(self.content, safe_mode='escape')
+        self.content_md = markdown.markdown(
+            self.content,
+            safe_mode='escape',
+            output_format='html5',
+            extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.sane_lists',
+                'markdown.extensions.codehilite(noclasses=True, linenums=False)'
+            ]
+        )
         super(PostBase, self).save(*args, **kwargs)
 
     class Meta:
