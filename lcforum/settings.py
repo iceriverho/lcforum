@@ -22,14 +22,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '+2l%2v75%#^x-vy!35(eokil(!xx**pbzxx@*(4c1o6x&6p9rr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-# ALLOWED_HOSTS = [
-# '.xmu.club',
-#     '.xmu.club.'
-# ]
+ALLOWED_HOSTS = [
+    '.lcfcn.com',
+    '.lcfcn.com.'
+]
 
 
 # Application definition
@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'forum',
 )
 
@@ -87,7 +86,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 TEMPLATE_DIRS = (
@@ -96,7 +95,10 @@ TEMPLATE_DIRS = (
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'unix:/tmp/memcached.sock',
+        'KEY_PREFIX': 'lcfcn',
+        'TIMEOUT': None
     }
 }
 
