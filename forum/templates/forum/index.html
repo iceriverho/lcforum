@@ -4,6 +4,7 @@
     <div class="index-row">
         <div id="recommended">
             <div class="index-column-title">最近发布</div>
+        {% if blog_latest %}
             {% with blog_latest|first as intro %}
                 <div style="overflow: hidden;height: 180px;">
                     <a href="{% url 'post-detail' pk=intro.pk %}">
@@ -12,6 +13,7 @@
                 {{ intro.content_md|safe }}
                 </div>
             {% endwith %}
+        {% endif %}
         </div>
         <div id="intro">
             <div class="index-column-title">About Me</div>
@@ -27,7 +29,7 @@
             <div class="index-column-title">站长发布</div>
             <ul>
                 {% for blog in blog_latest|slice:":10" %}
-                    <li>[<a href="{% url 'nodetag-detail' pk=blog.node.pk %}">{{ blog.node.name }}</a>]
+                    <li>[<a href="{% url 'nodetag-detail' slug=blog.node.slug %}">{{ blog.node.name }}</a>]
                         <a href="{% url 'post-detail' pk=blog.pk %}">{{ blog.title }}</a></li>
                 {% endfor %}
             </ul>
@@ -36,7 +38,7 @@
             <div class="index-column-title">讨论版新贴</div>
             <ul>
                 {% for post in post_latest|slice:":10" %}
-                    <li>[<a href="{% url 'nodetag-detail' pk=post.node.pk %}">{{ post.node.name }}</a>]
+                    <li>[<a href="{% url 'nodetag-detail' slug=post.node.slug %}">{{ post.node.name }}</a>]
                         <a href="{% url 'post-detail' pk=post.pk %}">{{ post.title }}</a></li>
                 {% endfor %}
             </ul>

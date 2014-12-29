@@ -26,13 +26,14 @@ class NodetagDetail(ListView):
     page_kwarg = 'p'
 
     def get_queryset(self):
+        node = get_object_or_404(NodeTag, slug=self.kwargs['slug'])
         all_posts = super(NodetagDetail, self).get_queryset()
-        posts_belong_to_this_node = all_posts.filter(node=self.kwargs['pk'])
+        posts_belong_to_this_node = all_posts.filter(node=node)
         return posts_belong_to_this_node
 
     def get_context_data(self, **kwargs):
         context = super(NodetagDetail, self).get_context_data(**kwargs)
-        context['nodetag'] = get_object_or_404(NodeTag, pk=self.kwargs['pk'])
+        context['nodetag'] = get_object_or_404(NodeTag, slug=self.kwargs['slug'])
         return context
 
 
@@ -141,7 +142,7 @@ class CreatePost(CreateView):
         return super(CreatePost, self).get_form_class()
 
     def get_node(self):
-        return self.node if self.node else get_object_or_404(NodeTag, pk=self.kwargs['pk'])
+        return self.node if self.node else get_object_or_404(NodeTag, slug=self.kwargs['slug'])
 
 
 class RegView(FormView):

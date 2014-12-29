@@ -21,8 +21,8 @@ urlpatterns = [
         model=models.NodeTag,
         template_name='forum/nodetag/list.html'
     ), name='nodetag-list'),
-    url(r'^forum/node/(?P<pk>\d+)/$', views.NodetagDetail.as_view(), name='nodetag-detail'),
-    url(r'^forum/node/(?P<pk>\d+)/post/$', views.CreatePost.as_view(), name='nodetag-post'),
+    url(r'^forum/node/(?P<slug>\w+)/$', views.NodetagDetail.as_view(), name='nodetag-detail'),
+    url(r'^forum/node/(?P<slug>\w+)/post/$', views.CreatePost.as_view(), name='nodetag-post'),
     url(r'^auth/reg/$', views.RegView.as_view(), name='user-reg'),
     url(r'^auth/login/$', 'django.contrib.auth.views.login', {
         'template_name': 'forum/auth/login.html'

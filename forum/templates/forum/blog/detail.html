@@ -1,7 +1,0 @@
-{% extends "forum/base.html" %}
-{% load i18n %}
-    {% block container %}
-        <div>{{ post.title }}</div>
-        <div>{{ post.content_md|safe|default:"<i>正文无内容</i>" }}</div>
-        <div><a href="{% url 'post-detail' pk=post.pk %}">参与原贴讨论</a></div>
-    {% endblock %}

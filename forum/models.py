@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.core import validators
 import markdown
 
+
 # 一般来说，默认只有主键被索引了（db_index = True）
 # 增加索引一般只有对数据比较多的时候才有意义，而且增加了主键后每次增删改都会重建索引
 class DateTimeBase(models.Model):
@@ -21,8 +22,7 @@ class PostBase(DateTimeBase):
         'blank': u"标题不能为空",
         'null': u"标题不能为空",
         'invalid': u"您输入了一个无效的标题，标题的长度请控制在100个字符内"
-    }, help_text=u"☞标题为必填且不能超过100个字符",
-                             verbose_name=u"标题")
+    }, help_text=u"☞标题为必填且不能超过100个字符", verbose_name=u"标题")
     content = models.TextField(blank=True, null=True,
                                help_text=u"☞内容可以留空，但不要输入无意义的内容",
                                verbose_name=u"内容")
@@ -41,7 +41,7 @@ class PostBase(DateTimeBase):
         error_messages={
             'invalid': u"您输入了一个无效的邮件地址，请修改或留空"
         }
-        )
+    )
     ip_addr = models.IPAddressField(default='0.0.0.0', verbose_name=u"IP地址", help_text=u"发信人的IP地址")
 
     def save(self, *args, **kwargs):
@@ -67,14 +67,14 @@ class NodeTag(DateTimeBase):
         'blank': u"节点的名称不能为空",
         'null': u"节点的名称不能为空",
         'invalid': u"您输入了一个无效的节点名称，节点名称的长度不能超过50个字符"
-    }, help_text=u"☞节点名称为必填且不能超过50个字符",
-                            verbose_name=u"节点名称")
+    }, help_text=u"☞节点名称为必填且不能超过50个字符", verbose_name=u"节点名称", unique=True)
     description = models.TextField(blank=True, null=True,
                                    help_text=u"☞关于节点讨论主题的简要描述",
                                    verbose_name=u"节点描述")
+    slug = models.CharField(max_length=30, help_text=u"☞节点的英文简写", verbose_name=u"节点代号", unique=True)
 
     def get_absolute_url(self):
-        return reverse('nodetag-detail', kwargs={'pk': self.pk})
+        return reverse('nodetag-detail', kwargs={'slug': self.slug})
 
     def __unicode__(self):
         return self.name
