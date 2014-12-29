@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div id="thread-head-r">
-                <a href="{% url 'nodetag-detail' pk=post.node.pk %}">➥返回<b>{{ post.node.name }}</b>节点</a>
+                <a href="{% url 'nodetag-detail' slug=post.node.slug %}">➥返回<b>{{ post.node.name }}</b>节点</a>
             </div>
         </div>
         <div id="thread-body" class="markdown">

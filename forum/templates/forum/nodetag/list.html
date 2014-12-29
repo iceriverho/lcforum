@@ -2,7 +2,7 @@
     {% block container %}
         <div id="nodetag-list">
         {% for node in nodetag_list %}
-        [<a href="{% url 'nodetag-detail' pk=node.pk %}">{{ node.name }}</a>]
+        [<a href="{% url 'nodetag-detail' slug=node.slug %}">{{ node.name }}</a>]
         {% endfor %}
         </div>
 

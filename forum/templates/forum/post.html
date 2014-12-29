@@ -7,7 +7,7 @@
         »
         发表新内容
 
-        <a href="{% url 'nodetag-detail' pk=node.pk %}" class="float-right">➥返回<b>{{ node.name }}</b>节点</a>
+        <a href="{% url 'nodetag-detail' slug=node.slug %}" class="float-right">➥返回<b>{{ node.name }}</b>节点</a>
     </div>
     <form action="" method="post">
     {% csrf_token %}

@@ -10,7 +10,7 @@
                 <span class="thread-created">{% language 'en' %}{{ thread.created|date:"M d, Y" }}{% endlanguage %}</span>
                 ▸
                 <span class="thread-title">
-                    [<a href="{% url 'nodetag-detail' pk=thread.node.pk %}">{{ thread.node.name|default:"-" }}</a>]
+                    [<a href="{% url 'nodetag-detail' slug=thread.node.slug %}">{{ thread.node.name|default:"-" }}</a>]
                     <a href="{% url 'post-detail' pk=thread.pk %}">{{ thread.title }}</a>
                 </span>
             </div>

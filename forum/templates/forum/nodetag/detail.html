@@ -6,8 +6,8 @@
             »
             <a href="{% url 'forum-index' %}">讨论板</a>
             »
-            <a href="{% url 'nodetag-detail' pk=nodetag.pk %}"><b>{{ nodetag.name }}</b></a>
-            <span><a href="{% url 'nodetag-post' pk=nodetag.pk %}">✍发表内容</a></span>
+            <a href="{% url 'nodetag-detail' slug=nodetag.slug %}"><b>{{ nodetag.name }}</b></a>
+            <span><a href="{% url 'nodetag-post' slug=nodetag.slug %}">✍发表内容</a></span>
         </div>
         <div id="thread-list">
             {% for post in object_list %}
@@ -23,16 +23,16 @@
             {% endfor %}
         </div>
         <div id="page-navi">
-            <a href="{% url 'nodetag-detail' pk=nodetag.pk %}">第一页</a>
+            <a href="{% url 'nodetag-detail' slug=nodetag.slug %}">第一页</a>
             «
             {% if page_obj.has_previous %}
-                <a href="{% url 'nodetag-detail' pk=nodetag.pk %}?p={{ page_obj.previous_page_number }}">上一页</a>
+                <a href="{% url 'nodetag-detail' slug=nodetag.slug %}?p={{ page_obj.previous_page_number }}">上一页</a>
             {% endif %}
             <span>{{ page_obj.number }}/{{ paginator.num_pages }}</span>
             {% if page_obj.has_next %}
-                <a href="{% url 'nodetag-detail' pk=nodetag.pk %}?p={{ page_obj.next_page_number }}">下一页</a>
+                <a href="{% url 'nodetag-detail' slug=nodetag.slug %}?p={{ page_obj.next_page_number }}">下一页</a>
             {% endif %}
             »
-            <a href="{% url 'nodetag-detail' pk=nodetag.pk %}?p=last">最后一页</a>
+            <a href="{% url 'nodetag-detail' slug=nodetag.slug %}?p=last">最后一页</a>
         </div>
     {% endblock %}
