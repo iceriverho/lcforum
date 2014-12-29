@@ -27,8 +27,8 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = [
-    '.xmu.club',
-    '.xmu.club.'
+    '.lcfcn.com',
+    '.lcfcn.com.'
 ]
 
 
@@ -97,6 +97,8 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': 'unix:/tmp/memcached.sock',
+        'KEY_PREFIX': 'lcfcn',
+        'TIMEOUT': None
     }
 }
 
