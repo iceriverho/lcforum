@@ -10,7 +10,7 @@
                     <a href="{% url 'post-detail' pk=intro.pk %}">
                         <h3 style="margin: 5px 0;">{{ intro.title }}</h3>
                     </a>
-                {{ intro.content_md|safe }}
+                {{ intro.content_md|safe|truncatechars_html:"80" }}
                 </div>
             {% endwith %}
         {% endif %}
