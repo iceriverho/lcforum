@@ -82,7 +82,10 @@ a:visited {
     font-size: 14px;
     margin-top: 15px;
     text-align: center;
-    color: #7A6A46;
+}
+
+#footer a {
+    color: #7a6a46;
 }
 
 /*forum index begin*/
