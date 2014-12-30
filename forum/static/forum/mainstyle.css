@@ -126,12 +126,13 @@ a:visited {
 
 #thread-head-l {
     float: left;
-    width: 80%;
+    width: 78%;
 }
 
 #thread-head-r {
     float: right;
     padding-top: 0.4em;
+    max-width: 56px;
 }
 
 #thread-head-t {
