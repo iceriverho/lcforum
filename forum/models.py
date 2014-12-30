@@ -53,7 +53,8 @@ class PostBase(DateTimeBase):
             extensions=[
                 'markdown.extensions.extra',
                 'markdown.extensions.sane_lists',
-                'markdown.extensions.codehilite(noclasses=True, linenums=False)'
+                'markdown.extensions.codehilite(noclasses=True, linenums=False)',
+                'markdown.extensions.toc'
             ]
         )
         super(PostBase, self).save(*args, **kwargs)
