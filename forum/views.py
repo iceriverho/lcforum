@@ -115,6 +115,7 @@ class CreatePost(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
         form.instance.node = self.get_node()
+        form.instance.ip_addr = self.request.META['REMOTE_ADDR']
         return super(CreatePost, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
