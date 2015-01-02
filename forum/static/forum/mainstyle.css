@@ -188,13 +188,12 @@ a:visited {
 
 .markdown blockquote {
     margin: auto 20px;
+    border-left: 4px solid #ccc;
+    background-color: #f8f8f8;
 }
 
 .markdown blockquote p {
     padding: 0.3em 0.5em;
-    border-left: 4px solid #ccc;
-    background-color: #f8f8f8;
-    font-style: italic;
 }
 
 .markdown pre {
