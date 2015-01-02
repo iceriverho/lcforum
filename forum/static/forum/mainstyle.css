@@ -238,11 +238,21 @@ a:visited {
 
 #recommended {
     overflow: hidden;
-    height: 210px;
-    padding-bottom: 90px;
+    height: 294px;
+    padding-bottom: 6px;
     width: 60%;
     float: left;
-    background: url("recommendback.gif") no-repeat bottom center;
+    background: url("recommendback.gif") repeat-x bottom center;
+}
+
+#index-recommend-post {
+    font-size: 14px;
+    display: block;
+    float: left;
+    padding: 0;
+    overflow: hidden;
+    height: 170px;
+    width: 100%;
 }
 
 #intro {
@@ -285,7 +295,20 @@ a:visited {
 
 .index-row li:hover {
     height: 25px;
-    /*line-height: 25px;*/
+    margin-bottom: 0;
+    border-bottom: 1px dotted;
+    background-color: #EFEACC;
+}
+
+#recommended li {
+    height: auto;
+    list-style-type: none;
+    margin-bottom: 1px;
+    overflow: hidden;
+    border-bottom: 1px dotted;
+}
+
+#recommended li:hover {
     margin-bottom: 0;
     border-bottom: 1px dotted;
     background-color: #EFEACC;
