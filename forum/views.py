@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView, FormView
+from django.views.generic import DetailView, ListView, CreateView, FormView, TemplateView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.models import modelform_factory
@@ -10,13 +10,20 @@ from django.forms.widgets import PasswordInput
 from .models import Post, NodeTag, Reply
 
 
-class IndexView(ListView):
-    model = Post
+class IndexView(TemplateView):
     template_name = 'forum/index.html'
 
     def get_context_data(self, **kwargs):
-        return {'post_latest': self.get_queryset().filter(bygod=False),
-                'blog_latest': self.get_queryset().filter(bygod=True)}
+        posts = Post.objects.all()
+        replies = Reply.objects.all()
+        admin_post = posts.filter(bygod=1)
+        return {
+            'post_latest': posts[:10],
+            'reply_latest': replies[:10],
+            'admin_post_latest': admin_post[1:7],
+            'admin_reply_latest': replies.filter(bygod=1)[:5],
+            'headline': admin_post[0]
+        }
 
 
 class NodetagDetail(ListView):
@@ -115,6 +122,7 @@ class CreatePost(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
         form.instance.node = self.get_node()
+        form.instance.ip_addr = self.request.META['REMOTE_ADDR']
         return super(CreatePost, self).form_valid(form)
 
     def get_context_data(self, **kwargs):

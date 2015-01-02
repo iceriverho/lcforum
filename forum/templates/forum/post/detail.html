@@ -30,11 +30,7 @@
             {{ post.content_md|safe|default:"<i>正文无内容</i>" }}
         </div>
         <div id="post-operate">
-            <a href="{% url 'post-reply' pk=post.pk %}">回复</a>
-            •
-            <a href="">编辑</a>
-            •
-            <a href="">删除</a>
+            <a href="{% url 'post-reply' pk=post.pk %}">发表回复</a>
         </div>
         <div id="thread-reply">
             {% for reply in object_list %}

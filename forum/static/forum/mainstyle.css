@@ -5,7 +5,6 @@ body {
 }
 
 div {
-    word-break: break-all;
     word-wrap: break-word;
     -ms-word-wrap: break-word;
 }
@@ -126,12 +125,13 @@ a:visited {
 
 #thread-head-l {
     float: left;
-    width: 80%;
+    width: 78%;
 }
 
 #thread-head-r {
     float: right;
     padding-top: 0.4em;
+    max-width: 56px;
 }
 
 #thread-head-t {
@@ -188,13 +188,12 @@ a:visited {
 
 .markdown blockquote {
     margin: auto 20px;
+    border-left: 4px solid #ccc;
+    background-color: #f8f8f8;
 }
 
 .markdown blockquote p {
     padding: 0.3em 0.5em;
-    border-left: 4px solid #ccc;
-    background-color: #f8f8f8;
-    font-style: italic;
 }
 
 .markdown pre {
@@ -238,11 +237,21 @@ a:visited {
 
 #recommended {
     overflow: hidden;
-    height: 210px;
-    padding-bottom: 90px;
+    height: 294px;
+    padding-bottom: 6px;
     width: 60%;
     float: left;
-    background: url("recommendback.gif") no-repeat bottom center;
+    background: url("recommendback.gif") repeat-x bottom center;
+}
+
+#index-recommend-post {
+    font-size: 14px;
+    display: block;
+    float: left;
+    padding: 0;
+    overflow: hidden;
+    height: 170px;
+    width: 100%;
 }
 
 #intro {
@@ -285,7 +294,20 @@ a:visited {
 
 .index-row li:hover {
     height: 25px;
-    /*line-height: 25px;*/
+    margin-bottom: 0;
+    border-bottom: 1px dotted;
+    background-color: #EFEACC;
+}
+
+#recommended li {
+    height: auto;
+    list-style-type: none;
+    margin-bottom: 1px;
+    overflow: hidden;
+    border-bottom: 1px dotted;
+}
+
+#recommended li:hover {
     margin-bottom: 0;
     border-bottom: 1px dotted;
     background-color: #EFEACC;
