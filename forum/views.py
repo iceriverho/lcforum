@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView, FormView, TemplateView
+from django.views.generic import ListView, CreateView, FormView, TemplateView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.models import modelform_factory
@@ -61,26 +61,6 @@ class ThreadDetail(ListView):
         return context
 
 
-class BlogList(ListView):
-    queryset = Post.objects.filter(bygod=True).order_by('node', '-created')
-    template_name = 'forum/blog/list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(BlogList, self).get_context_data(**kwargs)
-        context['reply_list'] = Reply.objects.filter(bygod=True)
-        return context
-
-
-class BlogListByNode(DetailView):
-    model = NodeTag
-    template_name = 'forum/blog/node.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(BlogListByNode, self).get_context_data(**kwargs)
-        context['post_list'] = Post.objects.filter(bygod=True, node=self.object)
-        return context
-
-
 class ReplyToPost(CreateView):
     model = Reply
     fields = ['content', 'guest_name', 'guest_email']
@@ -92,7 +72,7 @@ class ReplyToPost(CreateView):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
         form.instance.post_node = self.get_post_node()
         form.instance.title = 'Re:' + self.get_post_node().title
-        form.instance.ip_addr = self.request.META['REMOTE_ADDR']
+        form.instance.ip_addr = self.request.META.get('REMOTE_ADDR', None)
 
         return super(ReplyToPost, self).form_valid(form)
 
@@ -122,7 +102,7 @@ class CreatePost(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
         form.instance.node = self.get_node()
-        form.instance.ip_addr = self.request.META['REMOTE_ADDR']
+        form.instance.ip_addr = self.request.META.get('REMOTE_ADDR', None)
         return super(CreatePost, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
