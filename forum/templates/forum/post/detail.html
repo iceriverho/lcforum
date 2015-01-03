@@ -29,7 +29,7 @@
         <div id="thread-body" class="markdown">
             {{ post.content_md|safe|default:"<i>正文无内容</i>" }}
         </div>
-        <div id="post-operate">
+        <div class="post-operate">
             <a href="{% url 'post-reply' pk=post.pk %}">发表回复</a>
         </div>
         <div id="thread-reply">
@@ -53,6 +53,9 @@
                 </div>
                 <div class="thread-reply-body markdown">
                     {{ reply.content_md|safe }}
+                </div>
+                <div class="post-operate">
+                    <a href="{% url 'post-reply-cited' pk=post.pk reply_pk=reply.pk %}">引用并回复</a>
                 </div>
             {% endfor %}
         </div>

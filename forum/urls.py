@@ -17,6 +17,7 @@ urlpatterns = [
     ), name='forum-index'),
     url(r'^forum/thread/(?P<pk>\d+)/$', views.ThreadDetail.as_view(), name='post-detail'),
     url(r'^forum/thread/(?P<pk>\d+)/reply/$', views.ReplyToPost.as_view(), name='post-reply'),
+    url(r'^forum/thread/(?P<pk>\d+)/reply/(?P<reply_pk>\d+)/$', views.ReplyToPost.as_view(), name='post-reply-cited'),
     url(r'^forum/node/$', views.ListView.as_view(
         model=models.NodeTag,
         template_name='forum/nodetag/list.html'
