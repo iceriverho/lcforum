@@ -104,7 +104,7 @@ class Reply(PostBase):
         return reverse('forum-index')
 
     def __unicode__(self):
-        return "#{0} reply of '{1}'".format(self.pk, getattr(self.post_node, 'title', 'A Deleted Post'))
+        return u"#{0} reply of '{1}'".format(self.pk, getattr(self.post_node, 'title', 'A Deleted Post'))
 
     class Meta:
         verbose_name_plural = 'replies'
