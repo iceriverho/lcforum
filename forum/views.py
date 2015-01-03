@@ -6,8 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.models import modelform_factory
 from django.forms.widgets import PasswordInput
+from django.utils.six import BytesIO
 
 from .models import Post, NodeTag, Reply
+from .utility import get_client_ip
 
 
 class IndexView(TemplateView):
@@ -66,13 +68,40 @@ class ReplyToPost(CreateView):
     fields = ['content', 'guest_name', 'guest_email']
     template_name = 'forum/reply.html'
     post_node = None
+    cited_reply = None
+
+    def get_initial(self):
+        if 'reply_pk' in self.kwargs.keys():
+            cited_reply = self.get_cited_reply()
+            cited_author = cited_reply.author.username if cited_reply.author else cited_reply.guest_name
+            raw_content = BytesIO(getattr(cited_reply, 'content', ''))
+
+            line_no = 0
+            # There is a bug here:
+            # code block wrapped with "```" will not be rendered properly in quote-block.
+            initial_content = u'\r\n> **以下内容引用自{0}发表的回复：**\r\n\r\n'.format(cited_author)
+
+            for line in raw_content:
+                if line_no >= 13:
+                    initial_content += u'> \r\n> ...*(以下内容在引用时被省略)*'
+                    break
+
+                line = u'> ' + line
+                initial_content += line
+                line_no += 1
+
+            return {
+                'content': initial_content
+            }
+        else:
+            return super(ReplyToPost, self).get_initial()
 
     def form_valid(self, form):
         # http://www.wenda.io/questions/4377698/pass-current-user-to-initial-for-createview-in-django.html
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
         form.instance.post_node = self.get_post_node()
         form.instance.title = 'Re:' + self.get_post_node().title
-        form.instance.ip_addr = self.request.META.get('REMOTE_ADDR', None)
+        form.instance.ip_addr = get_client_ip(self.request)
 
         return super(ReplyToPost, self).form_valid(form)
 
@@ -92,6 +121,9 @@ class ReplyToPost(CreateView):
     def get_post_node(self):
         return self.post_node if self.post_node else get_object_or_404(Post, pk=self.kwargs['pk'])
 
+    def get_cited_reply(self):
+        return self.cited_reply if self.cited_reply else get_object_or_404(Reply, pk=self.kwargs['reply_pk'])
+
 
 class CreatePost(CreateView):
     model = Post
@@ -102,7 +134,7 @@ class CreatePost(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
         form.instance.node = self.get_node()
-        form.instance.ip_addr = self.request.META.get('REMOTE_ADDR', None)
+        form.instance.ip_addr = get_client_ip(self.request)
         return super(CreatePost, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
