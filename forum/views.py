@@ -73,7 +73,7 @@ class ReplyToPost(CreateView):
     def get_initial(self):
         if 'reply_pk' in self.kwargs.keys():
             cited_reply = self.get_cited_reply()
-            cited_author = cited_reply.author.username if cited_reply.author else cited_reply.guest_name
+            cited_author = getattr(cited_reply.author, 'username', None) or cited_reply.guest_name
             raw_content = BytesIO(getattr(cited_reply, 'content', ''))
 
             line_no = 0
@@ -119,10 +119,10 @@ class ReplyToPost(CreateView):
         return super(ReplyToPost, self).get_form_class()
 
     def get_post_node(self):
-        return self.post_node if self.post_node else get_object_or_404(Post, pk=self.kwargs['pk'])
+        return self.post_node or get_object_or_404(Post, pk=self.kwargs['pk'])
 
     def get_cited_reply(self):
-        return self.cited_reply if self.cited_reply else get_object_or_404(Reply, pk=self.kwargs['reply_pk'])
+        return self.cited_reply or get_object_or_404(Reply, pk=self.kwargs['reply_pk'])
 
 
 class CreatePost(CreateView):
@@ -162,7 +162,7 @@ class CreatePost(CreateView):
         return super(CreatePost, self).get_form_class()
 
     def get_node(self):
-        return self.node if self.node else get_object_or_404(NodeTag, slug=self.kwargs['slug'])
+        return self.node or get_object_or_404(NodeTag, slug=self.kwargs['slug'])
 
 
 class RegView(FormView):
