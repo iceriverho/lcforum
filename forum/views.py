@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, CreateView, FormView, TemplateView
+from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.models import modelform_factory
 from django.forms.widgets import PasswordInput
 from django.utils.six import BytesIO
 
-from .models import Post, NodeTag, Reply
+from .models import *
 from .utility import get_client_ip
 
 
@@ -210,3 +210,17 @@ class RegView(FormView):
                 'email': u"电子邮箱"
             }
         )
+
+
+class UploadView(CreateView):
+    template_name = 'forum/upload.html'
+    fields = ['file']
+    model = Attachment
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user if self.request.user.is_authenticated() else None
+        return super(UploadView, self).form_valid(form)
+
+    def get_success_url(self):
+        # See this: http://stackoverflow.com/a/9899170
+        return self.kwargs.get('next', '/')

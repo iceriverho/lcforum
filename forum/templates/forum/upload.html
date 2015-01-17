@@ -1,0 +1,13 @@
+{% extends 'forum/base.html' %}
+{% block container %}
+    <div class="guide-bar">
+        <a href="/">首页</a>
+        »
+        <b>上传文件</b>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="上传文件" />
+    </form>
+{% endblock %}

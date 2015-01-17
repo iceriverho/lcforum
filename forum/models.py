@@ -5,6 +5,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.core import validators
 import markdown
+from .utility import get_path_and_attr
 
 
 # 一般来说，默认只有主键被索引了（db_index = True）
@@ -109,3 +110,8 @@ class Reply(PostBase):
     class Meta:
         verbose_name_plural = 'replies'
         ordering = ['-pk']
+
+
+class Attachment(DateTimeBase):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    file = models.FileField(u'选择文件', null=True, upload_to=get_path_and_attr)
