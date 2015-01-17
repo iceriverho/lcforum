@@ -54,7 +54,7 @@ class ThreadDetail(ListView):
 
     def get_queryset(self):
         all_replies = super(ThreadDetail, self).get_queryset()
-        replies_belong_to_this_post = all_replies.filter(post_node=self.kwargs['pk'])
+        replies_belong_to_this_post = all_replies.filter(post_node=self.kwargs['pk']).order_by('pk')
         return replies_belong_to_this_post
 
     def get_context_data(self, **kwargs):
@@ -79,7 +79,7 @@ class ReplyToPost(CreateView):
             line_no = 0
             # There is a bug here:
             # code block wrapped with "```" will not be rendered properly in quote-block.
-            initial_content = u'\r\n> **以下内容引用自{0}发表的回复：**\r\n\r\n'.format(cited_author)
+            initial_content = u'\r\n> **以下内容引用自{0}发表的回复：**\r\n> \r\n'.format(cited_author)
 
             for line in raw_content:
                 if line_no >= 13:

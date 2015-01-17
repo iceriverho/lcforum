@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import uuid
 import datetime
-from PIL import Image
 
 
 def get_client_ip(request):
@@ -13,8 +12,7 @@ def get_client_ip(request):
     return ip
 
 
-def get_path_and_attr(instance, filename):
-
+def get_file_path(instance, filename):
     ext = filename.split('.')[-1]
     date = datetime.date.today().isocalendar()
     filename = "{2}/{3}/{4}/{0}.{1}".format(uuid.uuid4(), ext, *date)
