@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, CreateView, FormView, TemplateView
+from django.views.generic import ListView, CreateView, FormView, TemplateView, DetailView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.forms.models import modelform_factory
 from django.forms.widgets import PasswordInput
 from django.utils.six import BytesIO
 
-from .models import Post, NodeTag, Reply
+from .models import *
 from .utility import get_client_ip
 
 
@@ -54,7 +54,7 @@ class ThreadDetail(ListView):
 
     def get_queryset(self):
         all_replies = super(ThreadDetail, self).get_queryset()
-        replies_belong_to_this_post = all_replies.filter(post_node=self.kwargs['pk'])
+        replies_belong_to_this_post = all_replies.filter(post_node=self.kwargs['pk']).order_by('pk')
         return replies_belong_to_this_post
 
     def get_context_data(self, **kwargs):
@@ -73,13 +73,13 @@ class ReplyToPost(CreateView):
     def get_initial(self):
         if 'reply_pk' in self.kwargs.keys():
             cited_reply = self.get_cited_reply()
-            cited_author = cited_reply.author.username if cited_reply.author else cited_reply.guest_name
+            cited_author = getattr(cited_reply.author, 'username', None) or cited_reply.guest_name
             raw_content = BytesIO(getattr(cited_reply, 'content', ''))
 
             line_no = 0
             # There is a bug here:
             # code block wrapped with "```" will not be rendered properly in quote-block.
-            initial_content = u'\r\n> **以下内容引用自{0}发表的回复：**\r\n\r\n'.format(cited_author)
+            initial_content = u'\r\n> **以下内容引用自{0}发表的回复：**\r\n> \r\n'.format(cited_author)
 
             for line in raw_content:
                 if line_no >= 13:
@@ -119,17 +119,17 @@ class ReplyToPost(CreateView):
         return super(ReplyToPost, self).get_form_class()
 
     def get_post_node(self):
-        return self.post_node if self.post_node else get_object_or_404(Post, pk=self.kwargs['pk'])
+        return self.post_node or get_object_or_404(Post, pk=self.kwargs['pk'])
 
     def get_cited_reply(self):
-        return self.cited_reply if self.cited_reply else get_object_or_404(Reply, pk=self.kwargs['reply_pk'])
+        return self.cited_reply or get_object_or_404(Reply, pk=self.kwargs['reply_pk'])
 
 
 class CreatePost(CreateView):
     model = Post
     fields = ['title', 'content', 'guest_name', 'guest_email']
     template_name = 'forum/post.html'
-    node = None
+    node = None #node可能可以用@property解决
 
     def form_valid(self, form):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
@@ -162,7 +162,7 @@ class CreatePost(CreateView):
         return super(CreatePost, self).get_form_class()
 
     def get_node(self):
-        return self.node if self.node else get_object_or_404(NodeTag, slug=self.kwargs['slug'])
+        return self.node or get_object_or_404(NodeTag, slug=self.kwargs['slug'])
 
 
 class RegView(FormView):
@@ -210,3 +210,17 @@ class RegView(FormView):
                 'email': u"电子邮箱"
             }
         )
+
+
+class UploadView(CreateView):
+    template_name = 'forum/upload.html'
+    fields = ['attachment']
+    model = Attachment
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user if self.request.user.is_authenticated() else None
+        return super(UploadView, self).form_valid(form)
+
+    def get_success_url(self):
+        # See this: http://stackoverflow.com/a/9899170
+        return self.kwargs.get('next', '/')

@@ -105,4 +105,5 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/logout/'
 
-TEMPLATE_CONTEXT_PROCESSORS = ('django.contrib.auth.context_processors.auth', )
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+MEDIA_URL = '/upload/'

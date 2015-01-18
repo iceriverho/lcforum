@@ -2,6 +2,8 @@
 
 from django.conf.urls import url
 from django.views.generic import ListView
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import models
 from . import views
@@ -29,4 +31,15 @@ urlpatterns = [
         'template_name': 'forum/auth/login.html'
     }, name='user-login'),
     url(r'^auth/logout/$', 'django.contrib.auth.views.logout_then_login', name='user-logout'),
-]
+    url(r'^upload/$', views.UploadView.as_view(), name='upload-view'),
+    url(r'^attachment/(?P<pk>\d+)/', views.DetailView.as_view(
+        model=models.Attachment,
+        template_name='forum/attachment.html'
+    ), name='attachment-detail'),
+    url(r'^attachments/$', views.ListView.as_view(
+        model=models.Attachment,
+        template_name='forum/attachments.html',
+        paginate_by=15,
+        page_kwarg='p'
+    ), name='attachment-list')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
