@@ -129,7 +129,7 @@ class CreatePost(CreateView):
     model = Post
     fields = ['title', 'content', 'guest_name', 'guest_email']
     template_name = 'forum/post.html'
-    node = None
+    node = None #node可能可以用@property解决
 
     def form_valid(self, form):
         form.instance.author = self.request.user if self.request.user.is_authenticated() else None
@@ -214,7 +214,7 @@ class RegView(FormView):
 
 class UploadView(CreateView):
     template_name = 'forum/upload.html'
-    fields = ['file']
+    fields = ['attachment']
     model = Attachment
 
     def form_valid(self, form):

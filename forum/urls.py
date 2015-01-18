@@ -36,4 +36,10 @@ urlpatterns = [
         model=models.Attachment,
         template_name='forum/attachment.html'
     ), name='attachment-detail'),
+    url(r'^attachments/$', views.ListView.as_view(
+        model=models.Attachment,
+        template_name='forum/attachments.html',
+        paginate_by=15,
+        page_kwarg='p'
+    ), name='attachment-list')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
