@@ -395,3 +395,155 @@ textarea {
     color: #999;
 }
 /*form style end*/
+
+/*attachment page*/
+#download-pic {
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+
+#download-pic a {
+    background: url("download_button.gif") no-repeat;
+    display: inline-block;
+    width: 400px;
+    height: 152px;
+}
+
+#file-info {
+    border-top: 1px dotted;
+    padding: 0;
+}
+
+#file-info li {
+    border-bottom: 1px dotted;
+    height: 30px;
+    line-height: 30px;
+    list-style-type: none;
+    padding: 2px;
+}
+
+#file-info li:hover {
+    background-color: #efeacc;
+}
+
+.file-info-l {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    font-weight: bold;
+}
+
+.file-info-r {
+    display: inline-block;
+    text-align: center;
+    width: 580px;
+}
+
+#file-info input {
+    font-size: 13px;
+    height: 18px;
+    width: 90%;
+}
+
+#img_preview {
+    border: 4px double;
+    margin: 15px auto 30px;
+    max-height: 500px;
+    max-width: 650px;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+#img_preview img {
+    max-height: 500px;
+    max-width: 650px;
+}
+/*attachment page end*/
+
+/*upload page begin*/
+#upload-form {
+    margin: 20px auto;
+}
+
+#upload-form form {
+    text-align: center;
+}
+/*upload page end*/
+
+/*attachments page begin*/
+.file-item {
+    padding: 5px;
+    border: 1px solid;
+    margin: 10px auto;
+    width: 688px;
+    overflow: hidden;
+}
+
+.file-item-icon {
+    width: 60px;
+    height: 60px;
+    background: url("filetype_icon.gif") no-repeat;
+    margin-right: 15px;
+    float: left;
+}
+
+.file-item-icon-file {
+    background-position: 0 -60px;
+}
+
+.file-item-icon-img {
+    background-position: 0 0;
+}
+
+.file-item-go {
+    width: 80px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    float: right;
+}
+
+.file-item-go a {
+    border: 3px groove;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.file-item-description {
+    float: left;
+}
+
+.file-item-description-line {
+    height: 20px;
+    line-height: 20px;
+    font-size: 13px;
+}
+
+.file-item-description-l {
+    display: inline-block;
+    width: 80px;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+.file-item-description-r {
+    display: inline-block;
+    width: 420px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.file-item-description-r input {
+    font-size: 12px;
+    height: 16px;
+    width: 90%;
+    padding: 0;
+    text-align: center;
+}
+/*attachments page end*/

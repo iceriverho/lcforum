@@ -7,6 +7,7 @@ from django.core import validators
 import markdown
 from .utility import get_file_path
 from PIL import Image
+import os.path
 
 
 # 一般来说，默认只有主键被索引了（db_index = True）
@@ -117,21 +118,28 @@ class Attachment(DateTimeBase):
     width = models.PositiveIntegerField(u"图片宽度", blank=True, null=True, default=0,
                                         help_text=u"图片的宽度，单位为像素(px)")
     height = models.PositiveIntegerField(u"图片长度", blank=True, null=True, default=0,
-                                        help_text=u"图片的长度，单位为像素(px)")
+                                         help_text=u"图片的长度，单位为像素(px)")
     image_format = models.CharField(u"图片格式", max_length=100, blank=True, null=True,
                                     help_text=u"图片的格式")
     is_image = models.BooleanField(u"是否图片文件", blank=True, default=False)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    file = models.FileField(u'选择文件', null=True, upload_to=get_file_path,
-                            help_text=u"选择要上传的文件，请不要上传非法、危险以及涉及极权问题的文件")
+    remark = models.CharField(u"文件备注", max_length=200, blank=True, null=True,
+                              help_text=u"文件上传后会被统一命名，建议加上备注以便查找")
+    attachment = models.FileField(u'选择文件', null=True, upload_to=get_file_path,
+                                  help_text=u"选择要上传的文件，请不要上传非法、危险以及涉及版权问题的文件")
+
+    def filename(self):
+        return os.path.basename(self.attachment.name)
+
+    def file_exists(self):
+        return self.attachment and os.path.isfile(self.attachment.path)
 
     def save(self, *args, **kwargs):
         try:
-            pic = Image.open(self.file)
+            pic = Image.open(self.attachment)
             self.is_image = True
             self.image_format = pic.format
             self.width, self.height = pic.size
-            pic.close()
         except IOError:
             self.is_image = False
             self.width, self.height = 0, 0

@@ -97,4 +97,4 @@ LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/logout/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
-MEDIA_URL = 'upload/'
+MEDIA_URL = '/upload/'
