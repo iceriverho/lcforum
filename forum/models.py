@@ -123,6 +123,8 @@ class Attachment(DateTimeBase):
                                     help_text=u"图片的格式")
     is_image = models.BooleanField(u"是否图片文件", blank=True, default=False)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    remark = models.CharField(u"文件备注", max_length=200, blank=True, null=True,
+                              help_text=u"文件上传后会被统一命名，建议加上备注以便查找")
     attachment = models.FileField(u'选择文件', null=True, upload_to=get_file_path,
                                   help_text=u"选择要上传的文件，请不要上传非法、危险以及涉及版权问题的文件")
 

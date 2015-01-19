@@ -18,13 +18,14 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         posts = Post.objects.all()
         replies = Reply.objects.all()
-        admin_post = posts.filter(bygod=1)
+        #这里和下面的headline那里加的这个判断是为了空数据库的时候出现IndexError
+        admin_post = posts.filter(bygod=1) or [None,]
         return {
             'post_latest': posts[:10],
             'reply_latest': replies[:10],
             'admin_post_latest': admin_post[1:7],
             'admin_reply_latest': replies.filter(bygod=1)[:5],
-            'headline': admin_post[0]
+            'headline': admin_post[0] or []
         }
 
 
@@ -214,7 +215,7 @@ class RegView(FormView):
 
 class UploadView(CreateView):
     template_name = 'forum/upload.html'
-    fields = ['attachment']
+    fields = ['attachment', 'remark']
     model = Attachment
 
     def form_valid(self, form):

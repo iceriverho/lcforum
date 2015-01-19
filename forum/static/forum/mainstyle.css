@@ -441,7 +441,7 @@ textarea {
     width: 580px;
 }
 
-#file-info input, .file-item-description-r input {
+#file-info input {
     font-size: 13px;
     height: 18px;
     width: 90%;
@@ -486,9 +486,17 @@ textarea {
 .file-item-icon {
     width: 60px;
     height: 60px;
-    background-color: #000;
+    background: url("filetype_icon.gif") no-repeat;
     margin-right: 15px;
     float: left;
+}
+
+.file-item-icon-file {
+    background-position: 0 -60px;
+}
+
+.file-item-icon-img {
+    background-position: 0 0;
 }
 
 .file-item-go {
@@ -510,10 +518,9 @@ textarea {
 }
 
 .file-item-description-line {
-    height: 28px;
-    line-height: 28px;
-    font-size: 14px;
-    border-bottom: 1px dotted;
+    height: 20px;
+    line-height: 20px;
+    font-size: 13px;
 }
 
 .file-item-description-l {
@@ -521,11 +528,22 @@ textarea {
     width: 80px;
     text-align: center;
     font-weight: bold;
+    vertical-align: top;
 }
 
 .file-item-description-r {
     display: inline-block;
     width: 420px;
+    text-align: center;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.file-item-description-r input {
+    font-size: 12px;
+    height: 16px;
+    width: 90%;
+    padding: 0;
     text-align: center;
 }
 /*attachments page end*/

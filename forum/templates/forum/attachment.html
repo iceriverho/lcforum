@@ -19,6 +19,10 @@
         {% endif %}
         <ul id="file-info">
             <li><span class="file-info-l">文件名:</span><span class="file-info-r">{{ object.filename }}</span></li>
+            <li>
+                <span class="file-info-l">备注:</span>
+                <span class="file-info-r">{{ object.remark|default:"(无备注)" }}</span>
+            </li>
             <li><span class="file-info-l">文件大小:</span><span class="file-info-r">
                 {{ object.attachment.size|filesizeformat }}
                 {% if object.is_image %}
