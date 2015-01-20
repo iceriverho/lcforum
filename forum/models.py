@@ -136,10 +136,11 @@ class Attachment(DateTimeBase):
 
     def save(self, *args, **kwargs):
         try:
-            pic = Image.open(self.attachment)
+            pic = Image.open(self.attachment.path.encode('utf-8'))
             self.is_image = True
             self.image_format = pic.format
             self.width, self.height = pic.size
+            pic.close()
         except IOError:
             self.is_image = False
             self.width, self.height = 0, 0
