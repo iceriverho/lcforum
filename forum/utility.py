@@ -15,5 +15,5 @@ def get_client_ip(request):
 def get_file_path(instance, filename):
     ext = filename.split('.')[-1]
     date = datetime.date.today().isocalendar()
-    filename = "{2}/{3}/{4}/{0}.{1}".format(uuid.uuid4(), ext, *date)
+    filename = "{2}/{4}/{3}/{0}.{1}".format(uuid.uuid4(), ext, *date)
     return filename
