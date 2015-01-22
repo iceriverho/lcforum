@@ -148,5 +148,11 @@ class Attachment(DateTimeBase):
             self.width, self.height = 0, 0
         super(Attachment, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        return "{0}({1})".format(self.filename(), self.remark)
+
+    def get_absolute_url(self):
+        return reverse('attachment-detail', kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['-pk']
