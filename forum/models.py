@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -22,30 +23,30 @@ class DateTimeBase(models.Model):
 
 class PostBase(DateTimeBase):
     title = models.CharField(max_length=200, error_messages={
-        'blank': u"标题不能为空",
-        'null': u"标题不能为空",
-        'invalid': u"您输入了一个无效的标题，标题的长度请控制在100个字符内"
-    }, help_text=u"☞标题为必填且不能超过100个字符", verbose_name=u"标题")
+        'blank': "标题不能为空",
+        'null': "标题不能为空",
+        'invalid': "您输入了一个无效的标题，标题的长度请控制在100个字符内"
+    }, help_text="☞标题为必填且不能超过100个字符", verbose_name=u"标题")
     content = models.TextField(blank=True, null=True,
-                               help_text=u"☞内容可以留空，但不要输入无意义的内容",
-                               verbose_name=u"内容")
+                               help_text="☞内容可以留空，但不要输入无意义的内容",
+                               verbose_name="内容")
     author = models.ForeignKey(User, blank=True, null=True, related_name='%(class)s', on_delete=models.SET_NULL)
     content_md = models.TextField(blank=True, null=True)
     bygod = models.BooleanField(blank=True, default=False,
-                                help_text=u"☞将这篇文章归入管理员文集",
-                                verbose_name=u"归档")
-    guest_name = models.CharField(max_length=30, default="Guest", verbose_name=u"游客称呼", blank=True, null=True,
+                                help_text="☞将这篇文章归入管理员文集",
+                                verbose_name="归档")
+    guest_name = models.CharField(max_length=30, default="Guest", verbose_name="游客称呼", blank=True, null=True,
                                   validators=[
-                                      validators.RegexValidator(r'^[\w.@+-]+$', u"名字中包含不允许的字符.", 'invalid')
+                                      validators.RegexValidator(r'^[\w.@+-]+$', "名字中包含不允许的字符.", 'invalid')
                                   ])
     guest_email = models.EmailField(
-        max_length=254, verbose_name=u"游客联系方式", blank=True, null=True,
-        help_text=u"您的邮件地址在显示时会将@替换为[at]",
+        max_length=254, verbose_name="游客联系方式", blank=True, null=True,
+        help_text="您的邮件地址在显示时会将@替换为[at]",
         error_messages={
-            'invalid': u"您输入了一个无效的邮件地址，请修改或留空"
+            'invalid': "您输入了一个无效的邮件地址，请修改或留空"
         }
     )
-    ip_addr = models.IPAddressField(default='0.0.0.0', verbose_name=u"IP地址", help_text=u"发信人的IP地址")
+    ip_addr = models.IPAddressField(default='0.0.0.0', verbose_name="IP地址", help_text="发信人的IP地址")
 
     def save(self, *args, **kwargs):
         self.bygod = self.bygod if getattr(self.author, 'is_superuser', False) else False
@@ -68,14 +69,14 @@ class PostBase(DateTimeBase):
 
 class NodeTag(DateTimeBase):
     name = models.CharField(max_length=50, error_messages={
-        'blank': u"节点的名称不能为空",
-        'null': u"节点的名称不能为空",
-        'invalid': u"您输入了一个无效的节点名称，节点名称的长度不能超过50个字符"
-    }, help_text=u"☞节点名称为必填且不能超过50个字符", verbose_name=u"节点名称", unique=True)
+        'blank': "节点的名称不能为空",
+        'null': "节点的名称不能为空",
+        'invalid': "您输入了一个无效的节点名称，节点名称的长度不能超过50个字符"
+    }, help_text="☞节点名称为必填且不能超过50个字符", verbose_name="节点名称", unique=True)
     description = models.TextField(blank=True, null=True,
-                                   help_text=u"☞关于节点讨论主题的简要描述",
-                                   verbose_name=u"节点描述")
-    slug = models.CharField(max_length=30, help_text=u"☞节点的英文简写", verbose_name=u"节点代号", unique=True)
+                                   help_text="☞关于节点讨论主题的简要描述",
+                                   verbose_name="节点描述")
+    slug = models.CharField(max_length=30, help_text="☞节点的英文简写", verbose_name="节点代号", unique=True)
 
     def get_absolute_url(self):
         return reverse('nodetag-detail', kwargs={'slug': self.slug})
@@ -115,18 +116,18 @@ class Reply(PostBase):
 
 
 class Attachment(DateTimeBase):
-    width = models.PositiveIntegerField(u"图片宽度", blank=True, null=True, default=0,
-                                        help_text=u"图片的宽度，单位为像素(px)")
-    height = models.PositiveIntegerField(u"图片长度", blank=True, null=True, default=0,
-                                         help_text=u"图片的长度，单位为像素(px)")
-    image_format = models.CharField(u"图片格式", max_length=100, blank=True, null=True,
-                                    help_text=u"图片的格式")
-    is_image = models.BooleanField(u"是否图片文件", blank=True, default=False)
+    width = models.PositiveIntegerField("图片宽度", blank=True, null=True, default=0,
+                                        help_text="图片的宽度，单位为像素(px)")
+    height = models.PositiveIntegerField("图片长度", blank=True, null=True, default=0,
+                                         help_text="图片的长度，单位为像素(px)")
+    image_format = models.CharField("图片格式", max_length=100, blank=True, null=True,
+                                    help_text="图片的格式")
+    is_image = models.BooleanField("是否图片文件", blank=True, default=False)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    remark = models.CharField(u"文件备注", max_length=200, blank=True, null=True,
+    remark = models.CharField("文件备注", max_length=200, blank=True, null=True,
                               help_text=u"文件上传后会被统一命名，建议加上备注以便查找")
-    attachment = models.FileField(u'选择文件', null=True, upload_to=get_file_path,
-                                  help_text=u"选择要上传的文件，请不要上传非法、危险以及涉及版权问题的文件")
+    attachment = models.FileField('选择文件', null=True, upload_to=get_file_path,
+                                  help_text="选择要上传的文件，请不要上传非法、危险以及涉及版权问题的文件")
 
     def filename(self):
         return os.path.basename(self.attachment.name)
@@ -136,12 +137,16 @@ class Attachment(DateTimeBase):
 
     def save(self, *args, **kwargs):
         try:
-            pic = Image.open(self.attachment.path.encode('utf-8'))
+            pic = Image.open(self.attachment)
             self.is_image = True
             self.image_format = pic.format
             self.width, self.height = pic.size
-            pic.close()
-        except IOError:
+        except (IOError, UnicodeEncodeError):
+            # Pillow will cause UnicodeEncodeError if input filename is a unicode string
+            # and ONLY happens when input file is not a valid image format.
             self.is_image = False
             self.width, self.height = 0, 0
         super(Attachment, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-pk']
