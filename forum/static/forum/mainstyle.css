@@ -22,11 +22,6 @@ a:visited {
     color: #7A6A46;
 }
 
-p {
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
-}
-
 .float-right {
     display: inline-block;
     float: right;
