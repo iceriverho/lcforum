@@ -1,5 +1,6 @@
 {% extends 'forum/base.html' %}
 {% load staticfiles %}
+{% load truncate_by_width %}
 {% block container %}
     <div class="index-row">
         <div id="recommended">
@@ -14,7 +15,7 @@
                 {% for post in admin_post_latest %}
                     <li>
                         [{{ post.node }}]
-                        <a href="{% url 'post-detail' pk=post.pk|default:1 %}">{{ post.title|truncatechars:26 }}</a>
+                        <a href="{% url 'post-detail' pk=post.pk|default:1 %}">{{ post.title|truncate_by_width:45 }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -34,7 +35,7 @@
             <ul>
                 {% for blog in post_latest %}
                     <li>[<a href="{% url 'nodetag-detail' slug=blog.node.slug %}">{{ blog.node.name }}</a>]
-                        <a href="{% url 'post-detail' pk=blog.pk|default:1 %}">{{ blog.title }}</a></li>
+                        <a href="{% url 'post-detail' pk=blog.pk|default:1 %}">{{ blog.title|truncate_by_width:32 }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -42,7 +43,11 @@
             <div class="index-column-title">最近回复</div>
             <ul>
                 {% for reply in reply_latest %}
-                    <li><a href="{% url 'post-detail' pk=reply.post_node.pk|default:1 %}">{{ reply.content_md|striptags }}</a></li>
+                    <li>
+                        <a href="{% url 'post-detail' pk=reply.post_node.pk|default:1 %}">
+                            {{ reply.content_md|striptags|truncate_by_width:42 }}
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         </div>
