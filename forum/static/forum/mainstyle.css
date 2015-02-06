@@ -2,6 +2,7 @@ body {
     font-size: 16px;
     color: #4B4934;
     font-family: Georgia, "Times New Roman", Times, serif, sans-serif;
+    background-color: #fff;
 }
 
 div {
@@ -409,6 +410,7 @@ textarea {
 #file-info {
     border-top: 1px dotted;
     padding: 0;
+    margin: auto 0;
 }
 
 #file-info li {
