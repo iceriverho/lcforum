@@ -1,5 +1,6 @@
 {% extends "forum/base.html" %}
 {% load forum_strip_email %}
+{% block title %}{{ post.title }}{% endblock %}
     {% block container %}
         <div id="thread-head">
             <div id="thread-head-l">
