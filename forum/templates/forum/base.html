@@ -3,7 +3,7 @@
 <html>
 <head lang="zh-cn">
     <meta charset="UTF-8">
-    <title>LCF的个人网站</title>
+    <title>{% block title %}LCF的个人网站{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'forum/mainstyle.css' %}"/>
 </head>
 <body>
@@ -16,7 +16,6 @@
         <a href="{% url 'forum-index' %}">讨论版|FORUM</a>
         <a href="{% url 'nodetag-list' %}">节点|NODES</a>
         <a href="{% url 'attachment-list' %}">附件|FILES</a>
-        <a href="">实验室|LAB</a>
         {% if user.is_authenticated %}
             <span id="current_id">ID: {{ user.username }} (<a href="{% url 'user-logout' %}">退出</a>)</span>
         {% else %}
@@ -28,6 +27,5 @@
     {% endblock %}
     <div id="footer"><a href="http://lcfcn.com/forum/thread/3/">☎ ABOUT PAGE, CONTACTS & COPYRIGHT STATEMENT ☎</a></div>
 </div>
-
 </body>
 </html>
