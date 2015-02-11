@@ -4,10 +4,26 @@ from django.conf.urls import url
 from django.views.generic import ListView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps.views import sitemap
 
 from . import models
 from . import views
 
+sitemap_thread_by_admin = {
+    'queryset': models.Post.objects.filter(bygod=True),
+    'date_field': 'last_edited'
+}
+
+sitemap_threads = {
+    'queryset': models.Post.objects.filter(bygod=False),
+    'date_field': 'last_edited'
+}
+
+sitemaps = {
+    'thread_by_admin': GenericSitemap(sitemap_thread_by_admin, priority=0.7),
+    'threads': GenericSitemap(sitemap_threads, priority=0.5),
+}
 
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
@@ -41,5 +57,7 @@ urlpatterns = [
         template_name='forum/attachments.html',
         paginate_by=15,
         page_kwarg='p'
-    ), name='attachment-list')
+    ), name='attachment-list'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
