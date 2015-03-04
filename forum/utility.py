@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import uuid
 import datetime
 
 
@@ -13,9 +12,9 @@ def get_client_ip(request):
 
 
 def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
+    # ext = filename.split('.')[-1]
     date = datetime.date.today().isoformat().split('-')
-    filename = "{2}/{3}/{4}/{0}.{1}".format(uuid.uuid4(), ext, *date)
+    filename = u"{1}/{2}/{3}/{0}".format(filename, *date)
     return filename
 
 WIDTHS = [
