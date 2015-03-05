@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.core import validators
+from django.contrib.sitemaps import ping_google
 import markdown
 from .utility import get_file_path
 from PIL import Image
@@ -62,6 +63,12 @@ class PostBase(DateTimeBase):
             ]
         )
         super(PostBase, self).save(*args, **kwargs)
+        # ping_google() will make posting process slow if your server cannot connect with google servers
+        # ie, host in china normally cannot ping google smoothly.
+        # try:
+        #     ping_google()
+        # except Exception:
+        #     pass
 
     class Meta:
         abstract = True
