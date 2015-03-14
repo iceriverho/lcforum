@@ -188,6 +188,10 @@ a:visited {
     border-bottom: 1px dotted;
 }
 
+.markdown img {
+    min-width: 700px;
+}
+
 .markdown blockquote {
     margin: 0.4em 20px;
     border-left: 4px solid #ccc;
