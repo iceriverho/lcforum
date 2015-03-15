@@ -29,7 +29,7 @@ class PostBase(DateTimeBase):
         'invalid': "您输入了一个无效的标题，标题的长度请控制在100个字符内"
     }, help_text="☞标题为必填且不能超过100个字符", verbose_name=u"标题")
     content = models.TextField(blank=True, null=True,
-                               help_text="☞内容可以留空，但不要输入无意义的内容",
+                               help_text="☞支持Markdown语法. 内容可以留空，但不要输入无意义的内容",
                                verbose_name="内容")
     author = models.ForeignKey(User, blank=True, null=True, related_name='%(class)s', on_delete=models.SET_NULL)
     content_md = models.TextField(blank=True, null=True)
