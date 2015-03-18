@@ -194,8 +194,8 @@ a:visited {
 
 .markdown blockquote {
     margin: 0.4em 20px;
-    border-left: 4px solid #ccc;
-    background-color: #f8f8f8;
+    border-left: 4px solid #7a6a46;
+    background-color: #f0e0d6;
 }
 
 .markdown blockquote p {
