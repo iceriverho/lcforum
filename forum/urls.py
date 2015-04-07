@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^forum/thread/(?P<pk>\d+)/reply/$', views.ReplyToPost.as_view(), name='post-reply'),
     url(r'^forum/thread/(?P<pk>\d+)/reply/(?P<reply_pk>\d+)/$', views.ReplyToPost.as_view(), name='post-reply-cited'),
     # 节点相关页面
-    url(r'^forum/node/$', views.ListView.as_view(
+    url(r'^forum/node/$', ListView.as_view(
         model=models.NodeTag,
         template_name='forum/nodetag/list.html'
     ), name='nodetag-list'),
@@ -59,7 +59,7 @@ urlpatterns = [
         model=models.Attachment,
         template_name='forum/attachment.html'
     ), name='attachment-detail'),
-    url(r'^attachments/$', views.ListView.as_view(
+    url(r'^attachments/$', ListView.as_view(
         model=models.Attachment,
         template_name='forum/attachments.html',
         paginate_by=15,
