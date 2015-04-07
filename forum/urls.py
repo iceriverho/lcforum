@@ -68,5 +68,5 @@ urlpatterns = [
     # 其它
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
-    url(r'^rss/$', rss.PostsByAdminFeed()),
+    url(r'(?i)^rss/$', rss.PostsByAdminFeed(), name='rss'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

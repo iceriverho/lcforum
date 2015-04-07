@@ -5,7 +5,7 @@
 {% block container %}
     <div class="index-row">
         <div id="recommended">
-            <div class="index-column-title" style="margin-bottom: 0">站长发布</div>
+            <div class="index-column-title" style="margin-bottom: 0">站长发布(<a href="/rss/">RSS</a>)</div>
             <h3 style="background-color: #fbfaf2; margin: 0; padding: 0.3em; border-bottom: 1px solid #efeacc">
                 <a href="{% url 'post-detail' pk=headline.pk|default:1 %}">
                     [{{ headline.node }}]
